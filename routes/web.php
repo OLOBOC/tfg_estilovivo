@@ -25,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/horas-ocupadas', [CitaController::class, 'horasOcupadas'])->name('citas.ocupadas');
     Route::get('/cita-previa', [CitaController::class, 'create'])->name('cita-previa');
 });
+Route::middleware('auth')->delete('/citas/eliminar', [CitaController::class, 'destroy'])->name('citas.destroy');
 
 // 🎨 Galería (futura función de peluquero)
 Route::get('/peluqueria', [GaleriaController::class, 'index'])->name('galeria.index');

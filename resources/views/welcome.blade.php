@@ -70,32 +70,59 @@
         &copy; {{ date('Y') }} Estilo Vivo. Todos los derechos reservados.
     </footer>
 
-    <!-- Modal emergente con sección principal -->
-    <div id="modal-principal" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999]" style="display: none;">
-        <div>
+    <!-- Modal emergente con sección principal SOLO para invitados -->
+@guest
+<style>
+    .modal-fade {
+        transition: opacity 0.3s ease;
+    }
+    .modal-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .modal-visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+</style>
 
-
-            @include('partials.seccion-principal')
-        </div>
+<div id="modal-principal" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999] modal-fade modal-hidden">
+    <div class="transform scale-95 transition-all duration-300 ease-in-out" id="modal-content">
+        @include('partials.seccion-principal')
     </div>
+</div>
 
-    <script>
-        window.onload = function() {
-            document.getElementById("modal-principal").style.display = "flex";
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Mostrar siempre el modal al usuario invitado
+        const modal = document.getElementById('modal-principal');
+        const content = document.getElementById('modal-content');
 
-            // Cierra el modal al hacer clic fuera
-            document.getElementById("modal-principal").addEventListener("click", function(e) {
-                if (e.target === this) {
+        if (modal) {
+            console.log("Mostrando modal principal a usuario invitado");
+            modal.classList.remove('modal-hidden');
+            modal.classList.add('modal-visible');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+
+            modal.addEventListener("click", function(e) {
+                if (e.target === modal) {
                     cerrarModal();
                 }
             });
-        };
+        } else {
+            console.log("No se ha mostrado el modal (no es invitado)");
+        }
 
         function cerrarModal() {
-            document.getElementById("modal-principal").style.display = "none";
+            modal.classList.remove('modal-visible');
+            modal.classList.add('modal-hidden');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
         }
-    </script>
-
+    });
+</script>
+@endguest
 
 </body>
 

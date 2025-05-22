@@ -16,33 +16,31 @@ class CitaController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'fecha' => 'required|date|after_or_equal:today',
-        'hora' => 'required',
-        'peluquero_id' => 'required|exists:users,id',
-    ]);
+    {
+        $request->validate([
+            'fecha' => 'required|date|after_or_equal:today',
+            'hora' => 'required',
+            'peluquero_id' => 'required|exists:users,id',
+        ]);
 
-    // Verificamos si ya existe una cita con ese peluquero, fecha y hora
-    $existe = Cita::where('fecha', $request->fecha)
-        ->where('hora', $request->hora)
-        ->where('peluquero_id', $request->peluquero_id)
-        ->exists();
+        $existe = Cita::where('fecha', $request->fecha)
+            ->where('hora', $request->hora)
+            ->where('peluquero_id', $request->peluquero_id)
+            ->exists();
 
-    if ($existe) {
-        return redirect()->back()->with('error', 'Esta hora ya está ocupada para ese peluquero.');
+        if ($existe) {
+            return redirect()->back()->with('error', 'Esta hora ya está ocupada para ese peluquero.');
+        }
+
+        Cita::create([
+            'user_id' => Auth::id(),
+            'peluquero_id' => $request->peluquero_id,
+            'fecha' => $request->fecha,
+            'hora' => $request->hora,
+        ]);
+
+        return redirect()->route('citas.mis')->with('success', 'Cita reservada correctamente');
     }
-
-    // Si no existe, la creamos
-    Cita::create([
-        'user_id' => Auth::id(),
-        'peluquero_id' => $request->peluquero_id,
-        'fecha' => $request->fecha,
-        'hora' => $request->hora,
-    ]);
-
-    return redirect()->route('citas.mis')->with('success', 'Cita reservada correctamente');
-}
 
     public function horasOcupadas(Request $request)
     {
@@ -58,7 +56,6 @@ class CitaController extends Controller
         return response()->json($ocupadas);
     }
 
-
     public function misCitas()
     {
         $citas = Cita::where('user_id', Auth::id())
@@ -67,6 +64,19 @@ class CitaController extends Controller
             ->orderBy('hora')
             ->get();
 
-        return view('citas.mis', compact('citas')); 
+        return view('citas.mis', compact('citas'));
+    }
+
+    public function destroy(Request $request)
+    {
+        $cita = Cita::findOrFail($request->id);
+
+        if ($cita->user_id !== Auth::id()) {
+            abort(403, 'No autorizado.');
+        }
+
+        $cita->delete();
+
+        return redirect()->route('citas.mis')->with('success', 'Cita cancelada correctamente.');
     }
 }
