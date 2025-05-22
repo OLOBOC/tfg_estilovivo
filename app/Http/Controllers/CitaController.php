@@ -67,6 +67,6 @@ class CitaController extends Controller
             ->orderBy('hora')
             ->get();
 
-        return view('citas.mis', compact('citas')); // ⬅️ Esta línea es CLAVE
+        return view('citas.mis', compact('citas')); 
     }
 }

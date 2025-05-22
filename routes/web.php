@@ -13,8 +13,9 @@ Route::get('/', function () {
 
 // ✅ Dashboard protegido
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect('/');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 // 🗓️ Rutas de Citas protegidas
 Route::middleware(['auth'])->group(function () {
