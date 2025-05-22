@@ -1,29 +1,36 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Estilo Vivo</title>
+    @vite('resources/css/app.css')
+</head>
+<body class="bg-gradient-to-b from-orange-100 to-white text-gray-800 font-sans">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+    @include('partials.header.auth') <!-- Header para usuarios autenticados -->
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+    <main class="py-12 px-4 max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-extrabold text-orange-600">Área personal</h1>
+            <p class="text-gray-600 mt-2 text-lg">Consulta o modifica tu información de perfil y seguridad.</p>
         </div>
-    </div>
-</x-app-layout>
+
+        <!-- Información de usuario -->
+        <div class="space-y-8">
+            <section class="bg-white p-6 rounded-lg shadow">
+                @include('profile.partials.update-profile-information-form')
+            </section>
+
+            <section class="bg-white p-6 rounded-lg shadow">
+                @include('profile.partials.update-password-form')
+            </section>
+
+            <section class="bg-white p-6 rounded-lg shadow">
+                @include('profile.partials.delete-user-form')
+            </section>
+        </div>
+    </main>
+
+</body>
+</html>
