@@ -5,21 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Galería Estilo Vivo</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Spinner de carga */
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #f97316;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body class="bg-orange-100 font-sans">
 
+  <!-- Header según rol del usuario -->
+  @auth
+    @if(Auth::user()->role === 'peluquero')
+      @include('partials.header.peluquero')
+    @else
+      @include('partials.header.cliente')
+    @endif
+  @else
+    @include('partials.header.guest')
+  @endauth
+
+  <!-- Sección principal -->
   <div class="flex justify-center py-10">
     <div class="bg-white rounded-3xl shadow-lg w-full max-w-6xl h-[800px] overflow-y-scroll scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-orange-100 px-6 py-4">
-      
+
+      <!-- Encabezado de la galería -->
       <div class="sticky top-0 bg-white z-10 pb-4 border-b border-gray-200">
         <h2 class="text-3xl font-bold text-center text-orange-600">Explora Estilo Vivo</h2>
         <div class="flex justify-center mt-2 space-x-8 text-sm font-medium text-gray-600">
-          <button class="border-b-2 border-orange-600 text-orange-600 px-2 pb-1">PUBLICACIONES</button>
-          <button class="hover:text-orange-600">VIDEOS</button>
-          <button class="hover:text-orange-600">GUARDADAS</button>
-          <button class="hover:text-orange-600">ETIQUETADAS</button>
+          <button id="btn-publicaciones" class="border-b-2 border-orange-600 text-orange-600 px-2 pb-1">PUBLICACIONES</button>
+          <button id="btn-guardadas" class="hover:text-orange-600">GUARDADAS</button>
         </div>
-        
+
         <!-- Filtro de servicio -->
         <div class="mt-4 text-center">
           <label for="servicioFiltro" class="text-sm font-medium text-gray-700 mr-2">Filtrar por servicio:</label>
@@ -29,22 +55,28 @@
             <option value="Peinado">Peinado</option>
             <option value="Tinte">Tinte</option>
           </select>
-@auth
-  @if(Auth::user()->role === 'admin' || Auth::user()->role === 'peluquero')
-    <div class="text-center mt-4">
-      <a href="{{ route('galeria.create') }}"
-         class="inline-block bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600 transition">
-        + Subir nuevo estilo
-      </a>
-    </div>
-  @endif
-@endauth
-
         </div>
+
+        <!-- Botón para subir nuevo estilo (solo para admin o peluquero) -->
+        @auth
+          @if(Auth::user()->role === 'admin' || Auth::user()->role === 'peluquero')
+            <div class="text-center mt-4">
+              <a href="{{ route('galeria.create') }}"
+                 class="inline-block bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600 transition">
+                + Subir nuevo estilo
+              </a>
+            </div>
+          @endif
+        @endauth
+      </div>
+
+      <!-- Spinner de carga -->
+      <div id="spinner" class="flex justify-center items-center h-64">
+        <div class="spinner"></div>
       </div>
 
       <!-- Galería dinámica estilo Instagram -->
-      <div id="galeria" class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+      <div id="galeria" class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 hidden">
         @foreach($galeria as $item)
           <div class="relative group overflow-hidden rounded-lg shadow-md cursor-pointer servicio-item"
                data-servicio="{{ $item->servicio }}"
@@ -75,8 +107,15 @@
     </div>
   </div>
 
-  <!-- JS Modal + Filtro -->
+  <!-- Scripts -->
   <script>
+    // Mostrar galería después de cargar
+    window.addEventListener('load', () => {
+      document.getElementById('spinner').classList.add('hidden');
+      document.getElementById('galeria').classList.remove('hidden');
+    });
+
+    // Función para abrir el modal
     function openModal(src, nombre, servicio, descripcion) {
       document.getElementById('modal-img').src = src;
       document.getElementById('modal-title').textContent = nombre;
@@ -85,10 +124,12 @@
       document.getElementById('modal').classList.remove('hidden');
     }
 
+    // Función para cerrar el modal
     function closeModal() {
       document.getElementById('modal').classList.add('hidden');
     }
 
+    // Cerrar modal al hacer clic fuera del contenido
     function closeModalOutside(event) {
       const modalContent = document.getElementById('modal-content');
       if (!modalContent.contains(event.target)) {
@@ -96,6 +137,7 @@
       }
     }
 
+    // Filtrar por servicio
     function filtrarPorServicio() {
       const filtro = document.getElementById('servicioFiltro').value;
       const items = document.querySelectorAll('.servicio-item');
@@ -109,6 +151,15 @@
         }
       });
     }
+
+    // Manejo de botones de navegación
+    document.getElementById('btn-publicaciones').addEventListener('click', () => {
+      // Lógica para mostrar publicaciones
+    });
+
+    document.getElementById('btn-guardadas').addEventListener('click', () => {
+      // Lógica para mostrar guardadas
+    });
   </script>
 
 </body>

@@ -69,8 +69,7 @@
     <footer class="bg-white border-t border-gray-200 text-center py-6 text-sm text-gray-600">
         &copy; {{ date('Y') }} Estilo Vivo. Todos los derechos reservados.
     </footer>
-
-    <!-- Modal emergente con sección principal SOLO para invitados -->
+<!-- Modal emergente con sección principal SOLO para invitados -->
 @guest
 <style>
     .modal-fade {
@@ -123,6 +122,37 @@
     });
 </script>
 @endguest
+
+    <!-- Modal emergente con sección principal SOLO para invitados
+    @guest
+    <div id="modal-principal" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999]" style="display: none;">
+        <div>
+            @include('partials.seccion-principal')
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            if (!localStorage.getItem('modalPrincipalMostrado')) {
+                console.log("Mostrando modal principal");
+                const modal = document.getElementById("modal-principal");
+                modal.style.display = "flex";
+                localStorage.setItem('modalPrincipalMostrado', 'true');
+
+                modal.addEventListener("click", function(e) {
+                    if (e.target === modal) {
+                        cerrarModal();
+                    }
+                });
+            }
+        };
+        console.log("Modal principal no mostrado");
+
+        function cerrarModal() {
+            document.getElementById("modal-principal").style.display = "none";
+        }
+    </script>
+    @endguest -->
 
 </body>
 
