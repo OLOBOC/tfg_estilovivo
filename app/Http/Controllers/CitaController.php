@@ -11,7 +11,8 @@ class CitaController extends Controller
 {
     public function create()
     {
-        $peluqueros = User::where('role', 'peluquero')->get();
+        $peluqueros = User::where('rol', 'peluquero')->get();
+
         return view('citas.create', compact('peluqueros'));
     }
 

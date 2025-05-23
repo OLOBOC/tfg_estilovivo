@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+
 class AuthenticatedSessionController extends Controller
 {
     /**
@@ -28,8 +29,21 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Obtenemos al usuario autenticado
+        $user = Auth::user();
+
+
+        // Redirigimos según su rol
+        switch ($user->rol) {
+            case 'admin':
+                return redirect()->route('admin.dashboard');
+            case 'peluquero':
+                return redirect()->route('peluquero.dashboard');
+            default:
+                return redirect()->route('home');
+        }
     }
+
 
     /**
      * Destroy an authenticated session.

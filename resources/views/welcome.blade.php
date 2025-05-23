@@ -6,24 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estilo Vivo</title>
     @vite('resources/css/app.css')
+    <style>
+        .modal-fade {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .modal-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+
+        .modal-visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+    </style>
 </head>
 
 <body class="bg-white text-gray-800 font-sans">
 
-    <!-- Header -->
-    @auth
-    @include('partials.header.auth')
+ <!-- Header según el rol -->
+@auth
+    @php
+        $rol = Auth::user()->rol;
+    @endphp
+
+    @if ($rol === 'admin')
+        @include('partials.header.admin') {{-- Header para administrador --}}
     @else
-    @include('partials.header.guest')
-    @endauth
+        @include('partials.header.auth') {{-- Cliente o peluquero autenticado --}}
+    @endif
+@else
+    @include('partials.header.guest') {{-- Visitante no autenticado --}}
+@endauth
+
+
+
+
 
     <!-- Hero principal -->
     <section id="inicio" class="bg-gradient-to-b from-orange-100 to-white text-center py-20 px-6">
         <h2 class="text-4xl md:text-5xl font-bold mb-4">Tu estilo, nuestra pasión</h2>
         <p class="text-xl text-gray-600 mb-6">Expertos en cortes, coloración y estilo moderno para ti.</p>
-        <a href="{{ route('citas.create') }}"
-            class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">Cita previa</a>
+        <a href="{{ route('citas.create') }}" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">Cita previa</a>
     </section>
+
+    @if (isset($mensaje))
+    <h2 style="color: green;">{{ $mensaje }}</h2>
+    @endif
 
     <!-- Quiénes somos -->
     <section id="quienes-somos" class="max-w-5xl mx-auto px-6 py-16">
@@ -69,90 +101,44 @@
     <footer class="bg-white border-t border-gray-200 text-center py-6 text-sm text-gray-600">
         &copy; {{ date('Y') }} Estilo Vivo. Todos los derechos reservados.
     </footer>
-<!-- Modal emergente con sección principal SOLO para invitados -->
-@guest
-<style>
-    .modal-fade {
-        transition: opacity 0.3s ease;
-    }
-    .modal-hidden {
-        opacity: 0;
-        pointer-events: none;
-    }
-    .modal-visible {
-        opacity: 1;
-        pointer-events: auto;
-    }
-</style>
 
-<div id="modal-principal" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999] modal-fade modal-hidden">
-    <div class="transform scale-95 transition-all duration-300 ease-in-out" id="modal-content">
-        @include('partials.seccion-principal')
-    </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Mostrar siempre el modal al usuario invitado
-        const modal = document.getElementById('modal-principal');
-        const content = document.getElementById('modal-content');
-
-        if (modal) {
-            console.log("Mostrando modal principal a usuario invitado");
-            modal.classList.remove('modal-hidden');
-            modal.classList.add('modal-visible');
-            content.classList.remove('scale-95');
-            content.classList.add('scale-100');
-
-            modal.addEventListener("click", function(e) {
-                if (e.target === modal) {
-                    cerrarModal();
-                }
-            });
-        } else {
-            console.log("No se ha mostrado el modal (no es invitado)");
-        }
-
-        function cerrarModal() {
-            modal.classList.remove('modal-visible');
-            modal.classList.add('modal-hidden');
-            content.classList.remove('scale-100');
-            content.classList.add('scale-95');
-        }
-    });
-</script>
-@endguest
-
-    <!-- Modal emergente con sección principal SOLO para invitados
+    <!-- Modal para invitados (una vez) -->
     @guest
-    <div id="modal-principal" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999]" style="display: none;">
-        <div>
+    <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999]" style="display: none;">
+        <div id="modal-principal" class="modal-fade modal-hidden">
             @include('partials.seccion-principal')
         </div>
     </div>
 
     <script>
-        window.onload = function() {
-            if (!localStorage.getItem('modalPrincipalMostrado')) {
-                console.log("Mostrando modal principal");
-                const modal = document.getElementById("modal-principal");
-                modal.style.display = "flex";
-                localStorage.setItem('modalPrincipalMostrado', 'true');
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('modalEstiloVivoVisto')) {
+                console.log("Mostrando modal a invitado nuevo");
 
-                modal.addEventListener("click", function(e) {
-                    if (e.target === modal) {
-                        cerrarModal();
+                const backdrop = document.getElementById('modal-backdrop');
+                const modal = document.getElementById('modal-principal');
+
+                backdrop.style.display = 'flex';
+                setTimeout(() => {
+                    modal.classList.remove('modal-hidden');
+                    modal.classList.add('modal-visible');
+                }, 10);
+
+                localStorage.setItem('modalEstiloVivoVisto', 'true');
+
+                backdrop.addEventListener('click', (e) => {
+                    if (e.target === backdrop) {
+                        modal.classList.remove('modal-visible');
+                        modal.classList.add('modal-hidden');
+                        setTimeout(() => backdrop.style.display = 'none', 300);
                     }
                 });
+            } else {
+                console.log("Modal ya fue visto por este invitado");
             }
-        };
-        console.log("Modal principal no mostrado");
-
-        function cerrarModal() {
-            document.getElementById("modal-principal").style.display = "none";
-        }
+        });
     </script>
-    @endguest -->
+    @endguest
 
 </body>
 

@@ -11,8 +11,9 @@ class CitaSeeder extends Seeder
 {
     public function run(): void
     {
-        $peluqueros = User::where('role', 'peluquero')->pluck('id');
-        $clientes = User::where('role', 'cliente')->pluck('id');
+        $peluqueros = User::where('rol', 'peluquero')->pluck('id');
+        $clientes = User::where('rol', 'cliente')->pluck('id');
+
 
         foreach ($clientes as $clienteId) {
             for ($i = 0; $i < rand(1, 2); $i++) {

@@ -14,21 +14,21 @@ class PeluqueroSeeder extends Seeder
             'name' => 'Carlos Pérez',
             'email' => 'carlos@estilovivo.com',
             'password' => Hash::make('password'),
-            'role' => 'peluquero',
+            'rol' => 'peluquero',
         ]);
 
         User::create([
             'name' => 'Laura García',
             'email' => 'laura@estilovivo.com',
             'password' => Hash::make('password'),
-            'role' => 'peluquero',
+            'rol' => 'peluquero',
         ]);
 
         User::create([
             'name' => 'Andrés Martínez',
             'email' => 'andres@estilovivo.com',
             'password' => Hash::make('password'),
-            'role' => 'peluquero',
+            'rol' => 'peluquero',
         ]);
     }
 }
