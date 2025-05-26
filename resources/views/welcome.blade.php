@@ -53,9 +53,13 @@
         <a href="{{ route('citas.create') }}" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">Cita previa</a>
     </section>
 
-    @if (isset($mensaje))
-    <h2 style="color: green;">{{ $mensaje }}</h2>
-    @endif
+   @if (isset($mensaje))
+    <script>
+        // Mostrar el mensaje en la consola del navegador
+        console.log("{{ $mensaje }}");
+    </script>
+@endif
+
 
     <!-- Quiénes somos -->
     <section id="quienes-somos" class="max-w-5xl mx-auto px-6 py-16">
@@ -103,29 +107,34 @@
     </footer>
 
     <!-- Modal para invitados (una vez) -->
-    @guest
-    <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999]" style="display: none;">
-        <div id="modal-principal" class="modal-fade modal-hidden">
-            @include('partials.seccion-principal')
-        </div>
+   @guest
+<div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999]" style="display: none;">
+    <div id="modal-principal" class="modal-fade modal-hidden">
+        @include('partials.seccion-principal')
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('modalEstiloVivoVisto')) {
-                console.log("Mostrando modal a invitado nuevo");
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Verificamos si el modal ya se ha mostrado antes
+        if (!localStorage.getItem('modalEstiloVivoVisto')) {
+            console.log("Mostrando modal a invitado nuevo");
 
-                const backdrop = document.getElementById('modal-backdrop');
-                const modal = document.getElementById('modal-principal');
+            const backdrop = document.getElementById('modal-backdrop');
+            const modal = document.getElementById('modal-principal');
 
+            if (backdrop && modal) {
+                // Mostrar el modal
                 backdrop.style.display = 'flex';
                 setTimeout(() => {
                     modal.classList.remove('modal-hidden');
                     modal.classList.add('modal-visible');
                 }, 10);
 
+                // Guardamos que ya se mostró
                 localStorage.setItem('modalEstiloVivoVisto', 'true');
 
+                // Permite cerrar clicando fuera
                 backdrop.addEventListener('click', (e) => {
                     if (e.target === backdrop) {
                         modal.classList.remove('modal-visible');
@@ -133,12 +142,24 @@
                         setTimeout(() => backdrop.style.display = 'none', 300);
                     }
                 });
-            } else {
-                console.log("Modal ya fue visto por este invitado");
             }
-        });
-    </script>
-    @endguest
+        } else {
+            console.log("Modal ya fue visto por este invitado");
+        }
+    });
+
+    // Función para cerrar desde el botón (usa class en el botón HTML)
+    function cerrarModal() {
+        const modal = document.getElementById('modal-principal');
+        const backdrop = document.getElementById('modal-backdrop');
+
+        modal.classList.remove('modal-visible');
+        modal.classList.add('modal-hidden');
+        setTimeout(() => backdrop.style.display = 'none', 300);
+    }
+</script>
+@endguest
+
 
 </body>
 

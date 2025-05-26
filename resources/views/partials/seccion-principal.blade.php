@@ -1,6 +1,7 @@
 <div class="bg-white rounded-3xl shadow-2xl px-8 py-10 max-w-lg mx-auto text-center relative animate-fade-in">
     <!-- Botón de cerrar -->
-    <button onclick="cerrarModal()" class="absolute top-3 right-3 text-gray-400 hover:text-red-600 text-2xl font-bold transition">&times;</button>
+<button onclick="cerrarModal()" class="absolute top-3 right-3 text-gray-400 hover:text-red-600 text-2xl font-bold transition">&times;</button>
+
 
     <!-- Título -->
     <h2 class="text-3xl font-bold text-gray-800 mb-3">Bienvenido a <span class="text-orange-600">Estilo Vivo</span></h2>

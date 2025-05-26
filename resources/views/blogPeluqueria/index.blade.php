@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,23 +16,27 @@
       height: 40px;
       animation: spin 1s linear infinite;
     }
+
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
   </style>
 </head>
+
 <body class="bg-orange-100 font-sans">
 
-  <!-- Header según rol del usuario -->
+  {{-- Header según el rol del usuario --}}
   @auth
-    @if(Auth::user()->role === 'peluquero')
-      @include('partials.header.peluquero')
+    @php $rol = Auth::user()->rol; @endphp
+
+    @if ($rol === 'admin')
+      @include('partials.header.admin')
     @else
-      @include('partials.header.cliente')
+      @include('partials.header.auth') {{-- Cliente o peluquero --}}
     @endif
   @else
-    @include('partials.header.guest')
+    @include('partials.header.guest') {{-- Visitante no autenticado --}}
   @endauth
 
   <!-- Sección principal -->
@@ -41,6 +46,18 @@
       <!-- Encabezado de la galería -->
       <div class="sticky top-0 bg-white z-10 pb-4 border-b border-gray-200">
         <h2 class="text-3xl font-bold text-center text-orange-600">Explora Estilo Vivo</h2>
+
+        {{-- Mostrar mensaje si acceso fue denegado --}}
+        @if(session('error'))
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mt-4 text-center">
+            {{ session('error') }}
+            @if(session('log') === 'acceso-denegado')
+              <script>console.log("⛔ Acceso denegado: solo peluqueros pueden crear publicaciones");</script>
+            @endif
+          </div>
+        @endif
+
+        <!-- Tabs -->
         <div class="flex justify-center mt-2 space-x-8 text-sm font-medium text-gray-600">
           <button id="btn-publicaciones" class="border-b-2 border-orange-600 text-orange-600 px-2 pb-1">PUBLICACIONES</button>
           <button id="btn-guardadas" class="hover:text-orange-600">GUARDADAS</button>
@@ -57,15 +74,18 @@
           </select>
         </div>
 
-        <!-- Botón para subir nuevo estilo (solo para admin o peluquero) -->
+        <!-- Botón para subir nuevo estilo (solo peluquero) -->
         @auth
-          @if(Auth::user()->role === 'admin' || Auth::user()->role === 'peluquero')
+          @if (Auth::user()->rol === 'peluquero')
             <div class="text-center mt-4">
               <a href="{{ route('galeria.create') }}"
                  class="inline-block bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600 transition">
                 + Subir nuevo estilo
               </a>
             </div>
+            <script>console.log("✅ Mostrando botón de subir estilo para peluquero");</script>
+          @else
+            <script>console.log("ℹ️ Usuario autenticado pero no es peluquero. Botón oculto.");</script>
           @endif
         @endauth
       </div>
@@ -75,7 +95,7 @@
         <div class="spinner"></div>
       </div>
 
-      <!-- Galería dinámica estilo Instagram -->
+      <!-- Galería de estilos -->
       <div id="galeria" class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 hidden">
         @foreach($galeria as $item)
           <div class="relative group overflow-hidden rounded-lg shadow-md cursor-pointer servicio-item"
@@ -92,7 +112,7 @@
     </div>
   </div>
 
-  <!-- Modal para ampliar imagen con información -->
+  <!-- Modal -->
   <div id="modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden" onclick="closeModalOutside(event)">
     <div id="modal-content" class="relative bg-white rounded-lg p-4 shadow-2xl max-w-md w-full">
       <button onclick="closeModal()" class="absolute top-2 right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300">
@@ -109,13 +129,12 @@
 
   <!-- Scripts -->
   <script>
-    // Mostrar galería después de cargar
+    // Mostrar galería al cargar
     window.addEventListener('load', () => {
       document.getElementById('spinner').classList.add('hidden');
       document.getElementById('galeria').classList.remove('hidden');
     });
 
-    // Función para abrir el modal
     function openModal(src, nombre, servicio, descripcion) {
       document.getElementById('modal-img').src = src;
       document.getElementById('modal-title').textContent = nombre;
@@ -124,12 +143,10 @@
       document.getElementById('modal').classList.remove('hidden');
     }
 
-    // Función para cerrar el modal
     function closeModal() {
       document.getElementById('modal').classList.add('hidden');
     }
 
-    // Cerrar modal al hacer clic fuera del contenido
     function closeModalOutside(event) {
       const modalContent = document.getElementById('modal-content');
       if (!modalContent.contains(event.target)) {
@@ -137,29 +154,15 @@
       }
     }
 
-    // Filtrar por servicio
     function filtrarPorServicio() {
       const filtro = document.getElementById('servicioFiltro').value;
       const items = document.querySelectorAll('.servicio-item');
 
       items.forEach(item => {
         const tipo = item.getAttribute('data-servicio');
-        if (filtro === 'todos' || tipo === filtro) {
-          item.classList.remove('hidden');
-        } else {
-          item.classList.add('hidden');
-        }
+        item.classList.toggle('hidden', filtro !== 'todos' && tipo !== filtro);
       });
     }
-
-    // Manejo de botones de navegación
-    document.getElementById('btn-publicaciones').addEventListener('click', () => {
-      // Lógica para mostrar publicaciones
-    });
-
-    document.getElementById('btn-guardadas').addEventListener('click', () => {
-      // Lógica para mostrar guardadas
-    });
   </script>
 
 </body>
