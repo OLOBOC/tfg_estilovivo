@@ -34,13 +34,16 @@
     @endphp
 
     @if ($rol === 'admin')
-        @include('partials.header.admin') {{-- Header para administrador --}}
+        @include('partials.header.admin')
+    @elseif ($rol === 'peluquero')
+        @include('partials.header.peluquero') {{-- Nuevo header para peluqueros --}}
     @else
-        @include('partials.header.auth') {{-- Cliente o peluquero autenticado --}}
+        @include('partials.header.auth')
     @endif
 @else
-    @include('partials.header.guest') {{-- Visitante no autenticado --}}
+    @include('partials.header.guest')
 @endauth
+
 
 
 
