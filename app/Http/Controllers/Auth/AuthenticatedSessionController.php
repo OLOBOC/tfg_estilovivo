@@ -9,11 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Muestra la vista de login.
      */
     public function create(): View
     {
@@ -21,41 +20,46 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Procesa el intento de login del usuario autenticado.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Autentica al usuario con los datos del formulario
         $request->authenticate();
 
+        // Regenera la sesión por seguridad
         $request->session()->regenerate();
 
         // Obtenemos al usuario autenticado
         $user = Auth::user();
 
-
-        // Redirigimos según su rol
+        // Redirección según su rol
         switch ($user->rol) {
             case 'admin':
+                // Si es administrador, lo redirigimos a su dashboard
                 return redirect()->route('admin.dashboard');
             case 'peluquero':
-                return redirect()->route('peluquero.dashboard');
+                // Si es peluquero, lo redirigimos a la página para publicar fotos
+                return redirect()->route('galeria.create');
             default:
+                // Otros roles (clientes, etc.), a la página principal
                 return redirect()->route('home');
         }
     }
 
-
     /**
-     * Destroy an authenticated session.
+     * Cierra la sesión del usuario autenticado.
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Cierra la sesión
         Auth::guard('web')->logout();
 
+        // Invalida la sesión y regenera el token CSRF
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
+        // Redirige al inicio
         return redirect('/');
     }
 }

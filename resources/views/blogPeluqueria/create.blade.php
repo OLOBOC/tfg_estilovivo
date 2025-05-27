@@ -3,97 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Subir Imagen a Galería</title>
+  <title>Publicar nuevo estilo</title>
   @vite('resources/css/app.css')
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-orange-100 font-sans py-10">
+<body class="bg-orange-100 font-sans">
 
-  {{-- Header según el rol --}}
+  {{-- Header según rol --}}
   @auth
-      @php $rol = Auth::user()->rol; @endphp
+    @php $rol = Auth::user()->rol; @endphp
 
-      @if ($rol === 'admin')
-          @include('partials.header.admin')
-      @else
-          @include('partials.header.auth')
-      @endif
+    @if ($rol === 'admin')
+      @include('partials.header.admin')
+    @elseif ($rol === 'peluquero')
+      @include('partials.header.peluquero')
+    @else
+      @include('partials.header.auth')
+    @endif
   @else
-      @include('partials.header.guest')
+    @include('partials.header.guest')
   @endauth
 
-  <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-md mt-10">
-
-    {{-- Mostrar solo si es peluquero --}}
+  <main class="flex justify-center items-start min-h-screen py-10 px-4">
     @auth
-        @if (Auth::user()->rol === 'peluquero')
-            <h2 class="text-2xl font-bold text-center text-orange-600 mb-6">Subir nuevo estilo</h2>
+      @if ($rol === 'peluquero')
+        <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-xl text-center">
 
-            {{-- Éxito --}}
-            @if (session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
-                    {{ session('success') }}
-                    <script>console.log("✅ Imagen subida correctamente");</script>
-                </div>
-            @endif
+          {{-- Interfaz inicial tipo Instagram --}}
+          <div id="promptUpload" class="cursor-pointer border-2 border-dashed border-orange-400 rounded-xl p-8 hover:bg-orange-50 transition"
+               onclick="document.getElementById('imagenInput').click(); console.log('Seleccionando imagen...')">
+            <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" alt="Subir" class="w-24 h-24 mx-auto mb-4 opacity-70">
+            <p class="text-lg text-gray-600">¿Quieres subir una imagen?</p>
+          </div>
 
-            {{-- Errores --}}
-            @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
-                    <ul class="list-disc list-inside text-sm">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <script>console.log("❌ Error al validar el formulario");</script>
-                </div>
-            @endif
+          {{-- Mensajes de éxito --}}
+          @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mt-6">
+              {{ session('success') }}
+              <script>console.log("Imagen subida correctamente");</script>
+            </div>
+          @endif
 
-            <form action="{{ route('galeria.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4"
-                  onsubmit="console.log('📤 Enviando imagen a la galería')">
-                @csrf
+          {{-- Errores --}}
+          @if ($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-6 text-left">
+              <ul class="list-disc list-inside text-sm">
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+              <script>console.log("Error de validación al subir estilo");</script>
+            </div>
+          @endif
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Imagen</label>
-                    <input type="file" name="imagen" accept="image/*" required
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
-                </div>
+          {{-- Formulario oculto --}}
+          <form id="uploadForm" action="{{ route('galeria.store') }}" method="POST" enctype="multipart/form-data"
+                class="space-y-4 mt-6 hidden text-left"
+                onsubmit="console.log('Enviando imagen...')">
+            @csrf
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Servicio</label>
-                    <select name="servicio" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
-                        <option value="">Selecciona un servicio</option>
-                        <option value="Corte">Corte</option>
-                        <option value="Peinado">Peinado</option>
-                        <option value="Tinte">Tinte</option>
-                    </select>
-                </div>
+            {{-- Input real de imagen --}}
+            <input type="file" name="imagen" id="imagenInput" accept="image/*" class="hidden" required onchange="vistaPrevia(event)">
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Nombre del Estilo</label>
-                    <input type="text" name="nombre_estilo" required
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
-                </div>
+            {{-- Vista previa --}}
+            <div id="previewContainer" class="hidden">
+              <p class="text-sm text-gray-600 mb-1">Vista previa:</p>
+              <img id="previewImg" src="#" alt="Vista previa" class="w-full h-64 object-cover rounded-lg border border-gray-300 shadow mb-4">
+            </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Descripción</label>
-                    <textarea name="descripcion" rows="3" required
-                              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"></textarea>
-                </div>
+            {{-- Campos adicionales --}}
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Servicio</label>
+              <select name="servicio" required
+                      class="block w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm">
+                <option value="">Selecciona un servicio</option>
+                <option value="Corte">Corte</option>
+                <option value="Peinado">Peinado</option>
+                <option value="Tinte">Tinte</option>
+              </select>
+            </div>
 
-                <div class="text-center">
-                    <button type="submit" class="bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 transition">
-                        Subir imagen
-                    </button>
-                </div>
-            </form>
-        @else
-            {{-- Usuario autenticado pero no peluquero --}}
-            <p class="text-center text-gray-500">Solo los peluqueros pueden subir contenido a la galería.</p>
-            <script>console.log("⛔ Acceso denegado: solo peluqueros pueden subir imágenes");</script>
-        @endif
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nombre del estilo</label>
+              <input type="text" name="nombre_estilo" required
+                     class="block w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+              <textarea name="descripcion" rows="3" required
+                        class="block w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm"></textarea>
+            </div>
+
+            <div class="text-center pt-4">
+              <button type="submit"
+                      class="bg-orange-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-orange-600 transition">
+                Publicar estilo
+              </button>
+            </div>
+          </form>
+        </div>
+      @else
+        <div class="text-center text-gray-600 text-lg">
+          Solo los peluqueros pueden subir contenido a la galería.
+          <script>console.log("Acceso denegado: no eres peluquero");</script>
+        </div>
+      @endif
     @endauth
+  </main>
 
-  </div>
+  <script>
+    function vistaPrevia(event) {
+      const fileInput = event.target;
+      const previewImg = document.getElementById('previewImg');
+      const previewContainer = document.getElementById('previewContainer');
+      const uploadForm = document.getElementById('uploadForm');
+      const promptUpload = document.getElementById('promptUpload');
 
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImg.src = e.target.result;
+          previewContainer.classList.remove('hidden');
+          uploadForm.classList.remove('hidden');
+          promptUpload.classList.add('hidden');
+          console.log("Vista previa generada y formulario desplegado");
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        console.log("No se seleccionó imagen");
+      }
+    }
+  </script>
 </body>
 </html>

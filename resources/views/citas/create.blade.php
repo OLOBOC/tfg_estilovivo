@@ -55,12 +55,24 @@
 <!-- Servicios -->
 <div id="servicios-container" class="mb-6 hidden w-full max-w-md">
     <label class="block font-medium text-gray-700 mb-2">Selecciona servicios:</label>
-    <div class="grid grid-cols-2 gap-2">
-        <label><input type="checkbox" name="servicios[]" value="corte" class="mr-2">Corte</label>
-        <label><input type="checkbox" name="servicios[]" value="lavado" class="mr-2">Lavado</label>
-        <label><input type="checkbox" name="servicios[]" value="peinado" class="mr-2">Peinado</label>
-        <label><input type="checkbox" name="servicios[]" value="tinte" class="mr-2">Tinte</label>
-        <label><input type="checkbox" name="servicios[]" value="tratamiento" class="mr-2">Tratamiento capilar</label>
+
+    <div id="lista-servicios" class="grid grid-cols-2 sm:grid-cols-2 gap-2 text-sm">
+        @php
+            $serviciosDisponibles = [
+                'Corte', 'Lavado', 'Peinado', 'Tinte', 
+                'Mechas', 'Moldeado', 'Alisado',
+                'Barba', 'Maquillaje', 'Manicura', 'Pedicura', 'Recogido', 'Extensiones'
+            ];
+        @endphp
+
+        @foreach ($serviciosDisponibles as $servicio)
+            <label class="flex items-center">
+                <input type="checkbox"
+                       class="checkbox-servicio mr-2"
+                       value="{{ strtolower(str_replace(' ', '_', $servicio)) }}">
+                {{ $servicio }}
+            </label>
+        @endforeach
     </div>
 </div>
 
@@ -77,6 +89,9 @@
     <input type="hidden" name="fecha" id="input-fecha">
     <input type="hidden" name="hora" id="input-hora">
     <input type="hidden" name="peluquero_id" id="input-peluquero">
+
+    <!-- Servicios seleccionados se insertan aquí vía JS -->
+    <div id="servicios-hidden"></div>
 </form>
 
 <script>
@@ -98,6 +113,7 @@
     const inputPeluquero = document.getElementById('input-peluquero');
     const confirmarBtn = document.getElementById('confirmarBtn');
 
+    const serviciosHidden = document.getElementById('servicios-hidden');
     const horasDisponibles = ["10:00", "11:00", "12:00", "15:00", "16:00", "17:00"];
     let currentDate = new Date();
 
@@ -200,6 +216,19 @@
     });
 
     confirmarBtn.addEventListener('click', function () {
+        // Limpiar servicios ocultos anteriores
+        serviciosHidden.innerHTML = '';
+
+        // Recoger servicios seleccionados
+        const seleccionados = document.querySelectorAll('.checkbox-servicio:checked');
+        seleccionados.forEach((checkbox) => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'servicios[]';
+            input.value = checkbox.value;
+            serviciosHidden.appendChild(input);
+        });
+
         document.getElementById('formCita').submit();
     });
 
@@ -215,6 +244,3 @@
 
     renderCalendario(currentDate);
 </script>
-
-</body>
-</html>

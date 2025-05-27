@@ -23,6 +23,7 @@
                 <!-- Solo visible en móvil -->
                 <div class="block md:hidden border-b border-gray-200">
                     <a href="{{ route('agenda.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">Agenda</a>
+                    <a href="{{ route('galeria.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">Galería</a>
                     <a href="{{ route('galeria.create') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">Publicar Foto</a>
                 </div>
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CitaController extends Controller
 {
+    // Mostrar formulario de reserva
     public function create()
     {
         $peluqueros = User::where('rol', 'peluquero')->get();
@@ -16,14 +17,19 @@ class CitaController extends Controller
         return view('citas.create', compact('peluqueros'));
     }
 
+    // Guardar la cita en la base de datos
     public function store(Request $request)
     {
+        // Validación de campos
         $request->validate([
             'fecha' => 'required|date|after_or_equal:today',
             'hora' => 'required',
             'peluquero_id' => 'required|exists:users,id',
+            'servicios' => 'required|array|min:1',
+            'servicios.*' => 'string'
         ]);
 
+        // Verificar si ya existe una cita en la misma fecha, hora y peluquero
         $existe = Cita::where('fecha', $request->fecha)
             ->where('hora', $request->hora)
             ->where('peluquero_id', $request->peluquero_id)
@@ -33,16 +39,19 @@ class CitaController extends Controller
             return redirect()->back()->with('error', 'Esta hora ya está ocupada para ese peluquero.');
         }
 
+        // Crear nueva cita con servicios seleccionados
         Cita::create([
             'user_id' => Auth::id(),
             'peluquero_id' => $request->peluquero_id,
             'fecha' => $request->fecha,
             'hora' => $request->hora,
+            'servicios' => $request->servicios // Se guarda como array (JSON)
         ]);
 
-        return redirect()->route('citas.mis')->with('success', 'Cita reservada correctamente');
+        return redirect()->route('citas.mis')->with('success', 'Cita reservada correctamente.');
     }
 
+    // Devolver las horas ocupadas de un peluquero en una fecha
     public function horasOcupadas(Request $request)
     {
         $request->validate([
@@ -57,6 +66,7 @@ class CitaController extends Controller
         return response()->json($ocupadas);
     }
 
+    // Mostrar las citas del usuario autenticado
     public function misCitas()
     {
         $citas = Cita::where('user_id', Auth::id())
@@ -68,6 +78,7 @@ class CitaController extends Controller
         return view('citas.mis', compact('citas'));
     }
 
+    // Eliminar cita del usuario (solo la suya)
     public function destroy(Request $request)
     {
         $cita = Cita::findOrFail($request->id);
