@@ -39,10 +39,6 @@ require __DIR__ . '/auth.php';
 | RUTAS PROTEGIDAS (requieren login)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function () {
-    Route::post('/galeria/{id}/guardar', [GaleriaController::class, 'guardar'])->name('galeria.guardar');
-    Route::get('/galeria/guardadas', [GaleriaController::class, 'guardadas'])->name('galeria.guardadas');
-});
 
 Route::middleware(['auth'])->group(function () {
 
@@ -60,21 +56,21 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/citas/eliminar', [CitaController::class, 'destroy'])->name('citas.destroy');
     Route::get('/citas/{cita}', [CitaController::class, 'show'])->name('citas.show');
 
-    // Galería: publicar, editar, eliminar
+    // Galería
     Route::get('/galeria/create', [GaleriaController::class, 'create'])->name('galeria.create');
     Route::post('/galeria', [GaleriaController::class, 'store'])->name('galeria.store');
     Route::get('/galeria/{id}/edit', [GaleriaController::class, 'edit'])->name('galeria.edit');
     Route::put('/galeria/{id}', [GaleriaController::class, 'update'])->name('galeria.update');
     Route::delete('/galeria/{id}', [GaleriaController::class, 'destroy'])->name('galeria.destroy');
 
-    // Galería: guardar y ver guardadas
-    Route::post('/galeria/{id}/guardar', [GaleriaController::class, 'toggleGuardar'])->name('galeria.guardar');
+    // Guardar y ver guardadas
+    Route::post('/galeria/{id}/guardar', [GaleriaController::class, 'guardar'])->name('galeria.guardar');
     Route::get('/galeria/guardadas', [GaleriaController::class, 'guardadas'])->name('galeria.guardadas');
 
-    // Agenda para peluquero
+    // Agenda del peluquero
     Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
-    // Administración de peluqueros
+    // Admin gestiona peluqueros
     Route::get('/admin/peluquero/create', [AdminPeluqueroController::class, 'create'])->name('admin.peluquero.create');
     Route::post('/admin/peluquero/create', [AdminPeluqueroController::class, 'store'])->name('admin.peluquero.store');
     Route::get('/admin/peluqueros', [AdminPeluqueroController::class, 'index'])->name('admin.peluquero.index');
@@ -82,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| RUTAS POR ROL (páginas personalizadas)
+| RUTAS POR ROL
 |--------------------------------------------------------------------------
 */
 

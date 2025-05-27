@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 
 class GaleriaController extends Controller
 {
+    // Mostrar todas las publicaciones (público general)
     public function index()
     {
         $galeria = Galeria::all();
         return view('blogPeluqueria.index', compact('galeria'));
     }
 
+    // Mostrar formulario de publicación (solo peluquero)
     public function create()
     {
         if (Auth::check() && Auth::user()->rol === 'peluquero') {
@@ -26,6 +28,7 @@ class GaleriaController extends Controller
             ->with('log', 'acceso-denegado');
     }
 
+    // Guardar nueva publicación
     public function store(Request $request)
     {
         $request->validate([
@@ -47,6 +50,7 @@ class GaleriaController extends Controller
         return redirect()->route('galeria.index')->with('success', 'Imagen subida correctamente');
     }
 
+    // Mostrar formulario de edición
     public function edit($id)
     {
         $galeria = Galeria::findOrFail($id);
@@ -60,6 +64,7 @@ class GaleriaController extends Controller
         return view('blogPeluqueria.edit', compact('galeria'));
     }
 
+    // Actualizar publicación
     public function update(Request $request, $id)
     {
         $galeria = Galeria::findOrFail($id);
@@ -78,10 +83,12 @@ class GaleriaController extends Controller
         ]);
 
         if ($request->hasFile('imagen')) {
+            // Eliminar imagen antigua si existe
             if ($galeria->imagen && Storage::disk('public')->exists(str_replace('storage/', '', $galeria->imagen))) {
                 Storage::disk('public')->delete(str_replace('storage/', '', $galeria->imagen));
             }
 
+            // Guardar nueva imagen
             $path = $request->file('imagen')->store('img', 'public');
             $galeria->imagen = 'storage/' . $path;
         }
@@ -94,6 +101,7 @@ class GaleriaController extends Controller
         return redirect()->route('galeria.index')->with('success', 'Publicación actualizada correctamente');
     }
 
+    // Eliminar publicación
     public function destroy($id)
     {
         $galeria = Galeria::findOrFail($id);
@@ -104,6 +112,7 @@ class GaleriaController extends Controller
                 ->with('log', 'acceso-denegado');
         }
 
+        // Eliminar imagen física
         if ($galeria->imagen && Storage::disk('public')->exists(str_replace('storage/', '', $galeria->imagen))) {
             Storage::disk('public')->delete(str_replace('storage/', '', $galeria->imagen));
         }
@@ -113,9 +122,27 @@ class GaleriaController extends Controller
         return redirect()->route('galeria.index')->with('success', 'Imagen eliminada correctamente');
     }
 
-    
+    // Guardar publicación como favorita (cliente)
+    public function guardar($id)
+{
+    $user = Auth::user();
+    $galeria = Galeria::findOrFail($id);
+
+    if ($user->guardadas()->where('galeria_id', $id)->exists()) {
+        $user->guardadas()->detach($id);
+        return redirect()->back()->with('success', 'Publicación eliminada de tus guardadas.');
+    } else {
+        $user->guardadas()->attach($id);
+        return redirect()->route('galeria.guardadas')->with('success', 'Publicación guardada.');
+
+    }
+}
 
 
-
-
+    // Mostrar publicaciones guardadas del cliente
+    public function guardadas()
+    {
+        $galeria = Auth::user()->guardadas()->get();
+        return view('blogPeluqueria.guardadas', compact('galeria'));
+    }
 }

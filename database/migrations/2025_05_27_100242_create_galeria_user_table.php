@@ -10,7 +10,8 @@ return new class extends Migration {
         Schema::create('galeria_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('galeria_id')->constrained()->onDelete('cascade');
+            $table->foreignId('galeria_id')->constrained('galeria')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

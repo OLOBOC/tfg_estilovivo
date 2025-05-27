@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Galeria extends Model
 {
+    // ✅ Define explícitamente el nombre de la tabla
     protected $table = 'galeria';
 
     protected $fillable = [
@@ -15,11 +16,7 @@ class Galeria extends Model
         'descripcion',
     ];
 
-    /**
-     * Relación con los usuarios que han guardado esta publicación
-     */
-
-
+    // Opcional: relación inversa si la usas desde User
     public function usuariosQueGuardaron()
     {
         return $this->belongsToMany(User::class, 'galeria_user')->withTimestamps();
