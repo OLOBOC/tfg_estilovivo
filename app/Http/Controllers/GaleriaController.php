@@ -113,37 +113,9 @@ class GaleriaController extends Controller
         return redirect()->route('galeria.index')->with('success', 'Imagen eliminada correctamente');
     }
 
-    // Alternar guardar/desguardar para clientes
-   public function toggleGuardar($id)
-{
-    $user = Auth::user();
-    $galeria = Galeria::findOrFail($id);
-
-    if ($user->guardadas()->where('galeria_id', $galeria->id)->exists()) {
-        $user->guardadas()->detach($galeria->id);
-        $status = 'desguardado';
-    } else {
-        $user->guardadas()->attach($galeria->id);
-        $status = 'guardado';
-    }
-
-    return response()->json(['status' => $status]);
-}
+    
 
 
-    // Mostrar solo las publicaciones guardadas del cliente
-   public function guardadas()
-{
-    $user = Auth::user();
-
-    if (!$user) {
-        return redirect()->route('login')->with('error', 'Debes iniciar sesión.');
-    }
-
-    $galeria = $user->guardadas()->get();
-
-    return view('blogPeluqueria.guardadas', compact('galeria'));
-}
 
 
 }

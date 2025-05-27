@@ -39,6 +39,10 @@ require __DIR__ . '/auth.php';
 | RUTAS PROTEGIDAS (requieren login)
 |--------------------------------------------------------------------------
 */
+Route::middleware(['auth'])->group(function () {
+    Route::post('/galeria/{id}/guardar', [GaleriaController::class, 'guardar'])->name('galeria.guardar');
+    Route::get('/galeria/guardadas', [GaleriaController::class, 'guardadas'])->name('galeria.guardadas');
+});
 
 Route::middleware(['auth'])->group(function () {
 

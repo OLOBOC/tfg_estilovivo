@@ -18,6 +18,8 @@ class Galeria extends Model
     /**
      * Relación con los usuarios que han guardado esta publicación
      */
+
+
     public function usuariosQueGuardaron()
     {
         return $this->belongsToMany(User::class, 'galeria_user')->withTimestamps();

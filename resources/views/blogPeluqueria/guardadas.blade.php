@@ -3,9 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Publicaciones guardadas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-orange-100 font-sans">
+
+  {{-- Header según el rol --}}
+  @auth
+    @php $rol = Auth::user()->rol; @endphp
+    @if ($rol === 'admin')
+      @include('partials.header.admin')
+    @elseif ($rol === 'peluquero')
+      @include('partials.header.peluquero')
+    @else
+      @include('partials.header.auth')
+    @endif
+  @else
+    @include('partials.header.guest')
+  @endauth
+
   <div class="max-w-6xl mx-auto px-4 py-10">
     <h2 class="text-3xl font-bold text-orange-600 mb-6 text-center">Tus publicaciones guardadas</h2>
 
@@ -24,5 +41,6 @@
       </div>
     @endif
   </div>
+
 </body>
 </html>

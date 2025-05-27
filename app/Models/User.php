@@ -33,8 +33,11 @@ class User extends Authenticatable
     /**
      * Relación con publicaciones guardadas (galería)
      */
-    public function guardadas()
-    {
-        return $this->belongsToMany(Galeria::class, 'galeria_user')->withTimestamps();
-    }
+   
+
+public function guardadas()
+{
+    return $this->belongsToMany(Galeria::class, 'galeria_user')->withTimestamps();
+}
+
 }
