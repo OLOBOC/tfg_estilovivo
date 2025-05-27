@@ -9,7 +9,6 @@
 </head>
 <body class="bg-orange-100 font-sans">
 
-{{-- Header según el rol --}}
 @auth
   @php $rol = Auth::user()->rol; @endphp
   @if ($rol === 'admin')
@@ -23,17 +22,14 @@
   @include('partials.header.guest')
 @endauth
 
-{{-- Contenedor principal --}}
 <div class="flex justify-center py-10">
   <div class="bg-white rounded-3xl shadow-lg w-full max-w-6xl h-[800px] overflow-y-scroll scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-orange-100 px-6 py-4">
     <h2 class="text-3xl font-bold text-center text-orange-600 mb-4">Explora Estilo Vivo</h2>
 
-    {{-- Spinner de carga --}}
     <div id="spinner" class="flex justify-center items-center h-64">
       <div class="spinner border-4 border-gray-300 border-t-orange-500 rounded-full w-12 h-12 animate-spin"></div>
     </div>
 
-    {{-- Galería --}}
     <div id="galeria" class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 hidden">
       @foreach($galeria as $item)
         <div class="relative group overflow-hidden rounded-lg shadow-md cursor-pointer servicio-item"
@@ -50,7 +46,6 @@
   </div>
 </div>
 
-{{-- Modal para editar/eliminar --}}
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden" onclick="closeModalOutside(event)">
   <div id="modal-content" class="relative bg-white rounded-lg p-4 shadow-2xl max-w-md w-full">
     <button onclick="closeModal()" class="absolute top-2 right-2 bg-gray-200 rounded-full p-1 hover:bg-gray-300">
@@ -58,7 +53,6 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
-
     <img id="modal-img" src="" class="w-full rounded-md mb-4">
     <h3 id="modal-title" class="text-xl font-semibold text-orange-600 mb-1"></h3>
     <p id="modal-service" class="text-sm text-gray-500 mb-1"></p>
@@ -66,38 +60,21 @@
 
     @auth
       @if (Auth::user()->rol === 'admin' || Auth::user()->rol === 'peluquero')
-        <div class="mt-6 text-center space-y-2">
-          {{-- Enlace a editar --}}
-          <a id="editLink" href="#" class="text-blue-600 text-sm font-semibold hover:underline">
-            Editar publicación
-          </a>
-
-          {{-- Formulario para eliminar --}}
-          <form id="deleteForm" method="POST" action="">
-            @csrf
-            @method('DELETE')
-            <button type="submit"
-                    onclick="return confirm('¿Estás seguro de que quieres eliminar esta imagen?')"
-                    class="text-red-600 text-sm font-semibold hover:underline">
-              Eliminar publicación
-            </button>
-          </form>
-        </div>
+        <form id="deleteForm" method="POST" action="" class="mt-6 text-center">
+          @csrf
+          @method('DELETE')
+          <button type="submit"
+                  onclick="return confirm('¿Estás seguro de que quieres eliminar esta imagen?')"
+                  class="text-red-600 text-sm font-semibold hover:underline">
+            Eliminar publicación
+          </button>
+        </form>
       @endif
     @endauth
   </div>
 </div>
 
-{{-- Scripts --}}
 <script>
-  // Mostrar galería cuando se cargue la página
-  window.addEventListener('load', () => {
-    document.getElementById('spinner').classList.add('hidden');
-    document.getElementById('galeria').classList.remove('hidden');
-    console.log("Galería cargada correctamente");
-  });
-
-  // Abre el modal con datos de la publicación
   function openModal(src, nombre, servicio, descripcion, id) {
     document.getElementById('modal-img').src = src;
     document.getElementById('modal-title').textContent = nombre;
@@ -110,22 +87,13 @@
       console.log("Formulario de eliminación configurado para ID:", id);
     }
 
-    const editLink = document.getElementById('editLink');
-    if (editLink) {
-      editLink.href = `/galeria/${id}/edit`;
-      console.log("Enlace de edición configurado para ID:", id);
-    }
-
     document.getElementById('modal').classList.remove('hidden');
   }
 
-  // Cierra el modal
   function closeModal() {
     document.getElementById('modal').classList.add('hidden');
-    console.log("Modal cerrado");
   }
 
-  // Cierra el modal si se hace clic fuera del contenido
   function closeModalOutside(event) {
     const modalContent = document.getElementById('modal-content');
     if (!modalContent.contains(event.target)) {
@@ -133,7 +101,6 @@
     }
   }
 
-  // Filtrar publicaciones por tipo de servicio
   function filtrarPorServicio() {
     const filtro = document.getElementById('servicioFiltro').value;
     const items = document.querySelectorAll('.servicio-item');
@@ -142,9 +109,12 @@
       const tipo = item.getAttribute('data-servicio');
       item.classList.toggle('hidden', filtro !== 'todos' && tipo !== filtro);
     });
-
-    console.log("Filtro aplicado:", filtro);
   }
+
+  window.addEventListener('load', () => {
+    document.getElementById('spinner').classList.add('hidden');
+    document.getElementById('galeria').classList.remove('hidden');
+  });
 </script>
 
 </body>
