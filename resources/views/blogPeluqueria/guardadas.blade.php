@@ -21,9 +21,8 @@
 
   {{-- contenedor blanco con sombra como index --}}
   <div class="flex justify-center py-10">
-    <!-- llamada al contenedor div  en partials/contenedor-guardadas.blade.php -->
-    @include('partials.div-guardadas')
-
+    
+     @include('partials.div-guardadas')
 
   </div>
 
