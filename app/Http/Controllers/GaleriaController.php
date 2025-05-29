@@ -124,19 +124,34 @@ class GaleriaController extends Controller
 
     // Guardar publicación como favorita (cliente)
     public function guardar($id)
-{
-    $user = Auth::user();
-    $galeria = Galeria::findOrFail($id);
+    {
+        $user = Auth::user();
+        $galeria = Galeria::findOrFail($id);
 
-    if ($user->guardadas()->where('galeria_id', $id)->exists()) {
-        $user->guardadas()->detach($id);
-        return redirect()->back()->with('success', 'Publicación eliminada de tus guardadas.');
-    } else {
-        $user->guardadas()->attach($id);
-        return redirect()->route('galeria.guardadas')->with('success', 'Publicación guardada.');
+        $yaGuardada = $user->guardadas()->where('galeria_id', $id)->exists();
 
+        if ($yaGuardada) {
+            $user->guardadas()->detach($id);
+            $estado = false; // desguardado
+            $mensaje = 'Publicación eliminada de tus guardadas.';
+        } else {
+            $user->guardadas()->attach($id);
+            $estado = true; // guardado
+            $mensaje = 'Publicación guardada.';
+        }
+
+        // Si es AJAX, responder con JSON
+        if (request()->expectsJson()) {
+            return response()->json([
+                'guardado' => $estado,
+                'mensaje' => $mensaje
+            ]);
+        }
+
+        // Si no es AJAX, redirigir normalmente
+        return redirect()->back()->with('success', $mensaje);
     }
-}
+
 
 
     // Mostrar publicaciones guardadas del cliente
