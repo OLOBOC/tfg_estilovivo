@@ -87,4 +87,5 @@ php artisan serve
 
 ## 👨‍💻 Autor
 
-Omar — TFG Grado en Ingeniería Informática
+Omar — TFG Grado en Desarrollo web
+
