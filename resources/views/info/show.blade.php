@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Cortes anteriores</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-orange-50 text-gray-800 min-h-screen">
 
     {{-- header dinamico --}}
@@ -27,8 +29,22 @@
 
         {{-- titulo --}}
         <h2 class="text-3xl font-bold text-orange-700 mb-8 text-center">
-            Cortes anteriores de {{ $cliente->name }}
+            Cortes anteriores de {{ ucfirst($cliente->name) }}
         </h2>
+
+        {{-- mensaje de exito si lo hay --}}
+        @if (session('success'))
+            <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded mb-6 text-center shadow">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- log en consola --}}
+        @if (session('console_log'))
+            <script>
+                console.log("{{ session('console_log') }}");
+            </script>
+        @endif
 
         {{-- listado de cortes --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -39,28 +55,34 @@
                 @endphp
 
                 <div class="bg-white shadow rounded overflow-hidden">
-                    <img src="{{ $corte->imagen }}" alt="foto del corte" class="w-full h-56 object-cover">
+                    <img src="{{ asset($corte->imagen) }}" alt="foto del corte" class="w-full h-56 object-cover">
+
                     <div class="p-4">
                         <p class="{{ $esTinte ? 'font-bold text-purple-700' : 'text-gray-800' }}">
                             {{ $descripcion }}
                         </p>
-                        <p class="text-sm text-gray-500 mt-2">Registrado el {{ $corte->created_at->format('d/m/Y') }}</p>
+                        <p class="text-sm text-gray-500 mt-2">
+                            Registrado el {{ $corte->created_at->format('d/m/Y') }}
+                        </p>
                     </div>
                 </div>
             @empty
-                <p class="col-span-3 text-center text-gray-600">no hay cortes anteriores registrados</p>
+                <p class="col-span-3 text-center text-gray-600">
+                    No hay cortes anteriores registrados.
+                </p>
             @endforelse
         </div>
 
         {{-- volver --}}
         <div class="text-center mt-10">
             <a href="{{ url()->previous() }}"
-               class="bg-gray-300 text-gray-800 px-5 py-2 rounded hover:bg-gray-400 transition">
-                volver
+                class="bg-gray-300 text-gray-800 px-5 py-2 rounded hover:bg-gray-400 transition">
+                Volver
             </a>
         </div>
 
     </main>
 
 </body>
+
 </html>

@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Publicar nuevo corte</title>
+    <title>Publicar Nuevo Corte</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-orange-50 text-gray-800 min-h-screen">
+<body class="bg-orange-50 text-gray-800 min-h-screen relative">
 
-    {{-- header dinamico segun el rol del usuario --}}
+    {{-- header dinamico --}}
     @auth
         @php $rol = Auth::user()->rol; @endphp
 
@@ -23,26 +23,41 @@
         @include('partials.header.guest')
     @endauth
 
-    {{-- contenedor principal --}}
+    {{-- toast de exito --}}
+    @if (session('success'))
+        <div id="toast"
+            class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded shadow-lg z-50 animate-fade">
+            {{ session('success') }}
+        </div>
+        <script>
+            console.log("mensaje recibido: '{{ session('success') }}'")
+            setTimeout(() => {
+                const toast = document.getElementById('toast');
+                if (toast) toast.style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
+
+    {{-- contenido principal --}}
     <main class="max-w-xl mx-auto px-4 py-10">
 
         {{-- titulo --}}
         <h2 class="text-3xl font-bold text-orange-700 mb-6 text-center">
-            Nuevo corte para {{ $cliente->name }}
+            Publicar Nuevo Corte para {{ ucfirst($cliente->name) }}
         </h2>
 
-        {{-- formulario para subir corte --}}
+        {{-- formulario --}}
         <form method="POST"
               action="{{ route('clientes.cortes.guardar', $cliente->id) }}"
               enctype="multipart/form-data"
               class="bg-white p-6 rounded shadow space-y-6"
               onsubmit="console.log('enviando corte nuevo para cliente id: {{ $cliente->id }}')">
-              
+
             @csrf
 
-            {{-- campo imagen obligatoria --}}
+            {{-- campo imagen --}}
             <div>
-                <label class="block text-sm text-gray-600 mb-1">imagen del corte</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Imagen del Corte</label>
                 <input type="file" name="imagen" required
                        class="w-full border border-gray-300 p-2 rounded bg-white">
                 @error('imagen')
@@ -50,9 +65,11 @@
                 @enderror
             </div>
 
-            {{-- descripcion opcional --}}
+            
+
+            {{-- descripcion --}}
             <div>
-                <label class="block text-sm text-gray-600 mb-1">descripcion (opcional)</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Descripción (opcional)</label>
                 <textarea name="descripcion" rows="3"
                           class="w-full border border-gray-300 p-2 rounded bg-white">{{ old('descripcion') }}</textarea>
                 @error('descripcion')
@@ -60,18 +77,18 @@
                 @enderror
             </div>
 
-            {{-- boton de envio --}}
+            {{-- boton --}}
             <button type="submit"
                     class="bg-orange-600 text-white px-5 py-2 rounded hover:bg-orange-700 transition w-full font-semibold">
-                publicar corte
+                Publicar Corte
             </button>
         </form>
 
-        {{-- volver a la pagina anterior --}}
+        {{-- volver --}}
         <div class="mt-6 text-center">
             <a href="{{ url()->previous() }}"
                class="inline-block bg-gray-300 text-gray-800 px-5 py-2 rounded hover:bg-gray-400 transition">
-                volver
+                Volver
             </a>
         </div>
 
