@@ -3,24 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Mis Citas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- para responsive real -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-orange-50 min-h-screen font-sans">
+
+    <!-- header reutilizable -->
     @include('partials.header.auth')
 
+    <!-- contenido principal -->
     <main class="p-4 sm:p-8">
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-orange-600 mb-6 text-center">Mis Citas</h1>
+        <h1 class="text-2xl sm:text-4xl font-extrabold text-orange-600 mb-6 text-center">Mis Citas</h1>
 
+        <!-- mensaje de éxito si existe -->
         @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6 text-center text-sm sm:text-base">
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6 text-center text-base">
                 {{ session('success') }}
             </div>
         @endif
 
-        <div class="max-w-4xl mx-auto space-y-8">
-            <!-- Citas futuras -->
+        <!-- contenedor general -->
+        <div class="max-w-2xl mx-auto space-y-10">
+
+            <!-- citas futuras -->
             <div>
                 <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Próximas citas</h2>
+
                 @php
                     $futurasCitas = $citas->where('fecha', '>=', now()->format('Y-m-d'))
                                           ->map(fn($cita) => [
@@ -31,20 +39,35 @@
                 @endphp
 
                 @forelse ($citas->where('fecha', '>=', now()->format('Y-m-d')) as $cita)
-                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow flex flex-col sm:flex-row justify-between gap-y-4 sm:gap-y-0 sm:items-center">
-                        <div>
-                            <p class="text-sm sm:text-base"><strong>Fecha:</strong> {{ $cita->fecha }}</p>
-                            <p class="text-sm sm:text-base"><strong>Hora:</strong> {{ $cita->hora }}</p>
-                            <p class="text-sm sm:text-base"><strong>Peluquero:</strong> {{ $cita->peluquero->name ?? 'No asignado' }}</p>
+                    <div class="bg-white p-4 sm:p-6 rounded-lg shadow space-y-4">
+                        <div class="space-y-1 text-base text-gray-800">
+                            <p><strong>Fecha:</strong> {{ $cita->fecha }}</p>
+                            <p><strong>Hora:</strong> {{ $cita->hora }}</p>
+                            <p><strong>Peluquero:</strong> {{ $cita->peluquero->name ?? 'No asignado' }}</p>
+                        </div>
 
-                            <p class="mt-3 text-sm text-gray-600 font-medium">Quedan:</p>
-                            <div class="flex gap-4 text-center text-gray-800 text-sm sm:text-base" id="contador-{{ $cita->id }}">
-                                <div><span class="countdown font-mono text-xl"><span class="dias">--</span></span><br>días</div>
-                                <div><span class="countdown font-mono text-xl"><span class="horas">--</span></span><br>horas</div>
-                                <div><span class="countdown font-mono text-xl"><span class="min">--</span></span><br>min</div>
-                                <div><span class="countdown font-mono text-xl"><span class="seg">--</span></span><br>seg</div>
+                        <div class="mt-3">
+                            <p class="text-sm text-gray-600 font-medium mb-1">Quedan:</p>
+                            <div class="flex justify-between text-gray-800 text-sm sm:text-base" id="contador-{{ $cita->id }}">
+                                <div class="text-center">
+                                    <div class="countdown font-mono text-xl"><span class="dias">--</span></div>
+                                    <div>días</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="countdown font-mono text-xl"><span class="horas">--</span></div>
+                                    <div>horas</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="countdown font-mono text-xl"><span class="min">--</span></div>
+                                    <div>min</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="countdown font-mono text-xl"><span class="seg">--</span></div>
+                                    <div>seg</div>
+                                </div>
                             </div>
                         </div>
+
                         <form method="POST" action="{{ route('citas.destroy') }}" class="text-right">
                             @csrf
                             @method('DELETE')
@@ -53,29 +76,31 @@
                         </form>
                     </div>
                 @empty
-                    <p class="text-gray-600">No tienes citas futuras.</p>
+                    <p class="text-gray-600 text-center">No tienes citas futuras.</p>
                 @endforelse
             </div>
 
-            <!-- Citas pasadas -->
+            <!-- historial de citas -->
             <div>
-                <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mt-6 mb-4">Historial de citas</h2>
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-4">Historial de citas</h2>
+
                 @forelse ($citas->where('fecha', '<', now()->format('Y-m-d')) as $cita)
-                    <div class="bg-gray-100 p-4 sm:p-6 rounded-lg shadow flex flex-col sm:flex-row justify-between gap-y-4 sm:gap-y-0 sm:items-center">
-                        <div>
-                            <p class="text-sm sm:text-base"><strong>Fecha:</strong> {{ $cita->fecha }}</p>
-                            <p class="text-sm sm:text-base"><strong>Hora:</strong> {{ $cita->hora }}</p>
-                            <p class="text-sm sm:text-base"><strong>Peluquero:</strong> {{ $cita->peluquero->name ?? 'No asignado' }}</p>
+                    <div class="bg-gray-100 p-4 sm:p-6 rounded-lg shadow space-y-3 sm:flex sm:items-center sm:justify-between">
+                        <div class="text-base text-gray-800">
+                            <p><strong>Fecha:</strong> {{ $cita->fecha }}</p>
+                            <p><strong>Hora:</strong> {{ $cita->hora }}</p>
+                            <p><strong>Peluquero:</strong> {{ $cita->peluquero->name ?? 'No asignado' }}</p>
                         </div>
                         <a href="{{ route('citas.info', $cita->id) }}" class="text-blue-600 hover:underline font-semibold text-sm sm:text-base text-right sm:text-left">Info</a>
                     </div>
                 @empty
-                    <p class="text-gray-600">No tienes citas anteriores.</p>
+                    <p class="text-gray-600 text-center">No tienes citas anteriores.</p>
                 @endforelse
             </div>
         </div>
     </main>
 
+    <!-- script contador -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const citas = @json($futurasCitas);
