@@ -7,6 +7,7 @@ use App\Http\Controllers\GaleriaController;
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\AdminPeluqueroController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\CorteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +20,11 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/search', [BusquedaController::class, 'buscar'])->name('search');
+
 Route::get('/seccion-principal', function () {
     return view('partials.seccion-principal');
 })->name('seccion-principal');
 
-// Galería pública
 Route::get('/peluqueria', [GaleriaController::class, 'index'])->name('galeria.index');
 
 /*
@@ -36,18 +37,18 @@ require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
-| RUTAS PROTEGIDAS (requieren login)
+| RUTAS PROTEGIDAS
 |--------------------------------------------------------------------------
 */
 
 Route::middleware(['auth'])->group(function () {
 
-    // Perfil
+    // perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Citas
+    // citas
     Route::get('/citas/crear', [CitaController::class, 'create'])->name('citas.create');
     Route::post('/citas/crear', [CitaController::class, 'store'])->name('citas.store');
     Route::get('/citas/mis', [CitaController::class, 'misCitas'])->name('citas.mis');
@@ -56,24 +57,40 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/citas/eliminar', [CitaController::class, 'destroy'])->name('citas.destroy');
     Route::get('/citas/{cita}', [CitaController::class, 'show'])->name('citas.show');
 
-    // Galería
+    // galeria
     Route::get('/galeria/create', [GaleriaController::class, 'create'])->name('galeria.create');
     Route::post('/galeria', [GaleriaController::class, 'store'])->name('galeria.store');
     Route::get('/galeria/{id}/edit', [GaleriaController::class, 'edit'])->name('galeria.edit');
     Route::put('/galeria/{id}', [GaleriaController::class, 'update'])->name('galeria.update');
     Route::delete('/galeria/{id}', [GaleriaController::class, 'destroy'])->name('galeria.destroy');
-
-    // Guardar y ver guardadas
     Route::post('/galeria/{id}/guardar', [GaleriaController::class, 'guardar'])->name('galeria.guardar');
     Route::get('/galeria/guardadas', [GaleriaController::class, 'guardadas'])->name('galeria.guardadas');
 
-    // Agenda del peluquero
+    // agenda (peluquero)
     Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
-    // Admin gestiona peluqueros
+    // admin gestiona peluqueros
     Route::get('/admin/peluquero/create', [AdminPeluqueroController::class, 'create'])->name('admin.peluquero.create');
     Route::post('/admin/peluquero/create', [AdminPeluqueroController::class, 'store'])->name('admin.peluquero.store');
     Route::get('/admin/peluqueros', [AdminPeluqueroController::class, 'index'])->name('admin.peluquero.index');
+
+    /*
+    |--------------------------------------------------------------------------
+    | CORTES (peluquero publica, cliente visualiza)
+    |--------------------------------------------------------------------------
+    */
+
+    // ver cortes anteriores del cliente (filtrados con ?antes=fecha si se desea)
+    Route::get('/clientes/{id}/cortes', [CorteController::class, 'verCortes'])->name('clientes.cortes');
+
+    // formulario para subir nuevo corte
+    Route::get('/clientes/{id}/cortes/create', [CorteController::class, 'crear'])->name('clientes.cortes.create');
+
+    // guardar el corte
+    Route::post('/clientes/{id}/cortes', [CorteController::class, 'guardar'])->name('clientes.cortes.guardar');
+
+    // cliente ve sus propios cortes en /mis-cortes
+    Route::get('/mis-cortes', [CorteController::class, 'misCortes'])->name('cliente.cortes');
 });
 
 /*

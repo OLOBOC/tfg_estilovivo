@@ -35,7 +35,7 @@
 
                 <!-- Enlaces principales del usuario -->
                 <a href="{{ route('citas.mis') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">Mis citas</a>
-                <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">Mis cortes</a>
+                <a href="{{ route('cliente.cortes') }}"class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">Mis cortes</a>
                 <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">Mi perfil</a>
 
                 <!-- Botón para cerrar sesión -->

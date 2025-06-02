@@ -91,7 +91,6 @@
                             <p><strong>Hora:</strong> {{ $cita->hora }}</p>
                             <p><strong>Peluquero:</strong> {{ $cita->peluquero->name ?? 'No asignado' }}</p>
                         </div>
-                        <a href="{{ route('citas.info', $cita->id) }}" class="text-blue-600 hover:underline font-semibold text-sm sm:text-base text-right sm:text-left">Info</a>
                     </div>
                 @empty
                     <p class="text-gray-600 text-center">No tienes citas anteriores.</p>

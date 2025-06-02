@@ -13,11 +13,23 @@
             padding: 0 1rem;
             line-height: 1;
         }
+
+        /* animacion fade-slide */
+        .fade-slide {
+            transition: all 0.2s ease;
+            transform: translateY(-5px);
+            opacity: 0;
+        }
+
+        .fade-slide.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-orange-50 font-sans min-h-screen text-gray-800 flex flex-col">
 
-    {{-- Header dinámico --}}
+    {{-- header dinamico --}}
     @auth
         @php $rol = Auth::user()->rol; @endphp
 
@@ -32,7 +44,7 @@
         @include('partials.header.guest')
     @endauth
 
-    {{-- Lógica de fechas y generación de horas --}}
+    {{-- logica de fechas --}}
     @php
         use Carbon\Carbon;
 
@@ -43,10 +55,10 @@
         $horas = collect(range(8, 20))->map(fn($h) => str_pad($h, 2, '0', STR_PAD_LEFT) . ':00');
     @endphp
 
-    {{-- Contenedor principal --}}
+    {{-- contenedor principal --}}
     <div class="w-full max-w-4xl mx-auto mt-6 sm:mt-10 p-4 sm:p-6 bg-white rounded-lg shadow min-h-[80vh]">
 
-        {{-- Navegación de días --}}
+        {{-- navegacion por dias --}}
         <div class="flex items-center justify-between mb-6">
             <a href="{{ route('agenda.index', ['fecha' => $fechaAnterior]) }}"
                class="flecha-dia text-orange-600 hover:text-orange-800">‹</a>
@@ -59,12 +71,11 @@
                class="flecha-dia text-orange-600 hover:text-orange-800">›</a>
         </div>
 
-        {{-- Log para consola --}}
         <script>
-            console.log("Mostrando agenda del día: {{ $fechaActual->toDateString() }}");
+            console.log("Mostrando agenda del dia: {{ $fechaActual->toDateString() }}");
         </script>
 
-        {{-- Agenda por hora --}}
+        {{-- agenda por hora --}}
         <div class="divide-y border-t">
             @foreach ($horas as $horaStr)
                 @php
@@ -73,12 +84,12 @@
 
                 <div class="flex flex-col sm:grid sm:grid-cols-12 gap-4 py-4 px-2 sm:px-4 hover:bg-orange-50">
 
-                    {{-- Hora --}}
+                    {{-- hora --}}
                     <div class="sm:col-span-2 font-semibold text-gray-600 text-sm sm:text-base">
                         {{ $horaStr }}h
                     </div>
 
-                    {{-- Detalles --}}
+                    {{-- detalles cliente --}}
                     <div class="sm:col-span-8 space-y-1 text-sm text-gray-700">
                         @if ($cita)
                             <p><strong>Cliente:</strong> {{ $cita->cliente->name ?? 'Desconocido' }}</p>
@@ -97,19 +108,65 @@
                         @endif
                     </div>
 
-                    {{-- Botón --}}
-                    <div class="sm:col-span-2">
+                    {{-- dropdown de acciones --}}
+                    <div class="sm:col-span-2 relative">
                         @if ($cita)
-                            <a href="{{ route('citas.show', ['cita' => $cita->id]) }}"
-                               class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition text-sm text-center block w-full sm:w-auto">
-                                Ver info
-                            </a>
+                            {{-- boton que activa el menu --}}
+                            <button onclick="toggleDropdown({{ $cita->id }})"
+                                    class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition text-sm w-full sm:w-auto">
+                                Ver info 
+                            </button>
+
+                            {{-- menu oculto por defecto --}}
+                            <div id="dropdown-{{ $cita->id }}"
+                                 class="hidden fade-slide absolute right-0 mt-2 w-52 bg-white border border-gray-200 rounded shadow z-10">
+
+                              <a href="{{ route('clientes.cortes', $cita->cliente->id) }}" 
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">Ver anteriores</a>
+
+                              <a href="{{ route('clientes.cortes.create', $cita->cliente->id) }}"
+                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">Publicar nuevo</a> 
+                            </div>
                         @endif
                     </div>
                 </div>
             @endforeach
         </div>
     </div>
+
+    {{-- script para manejar los dropdowns --}}
+    <script>
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(`dropdown-${id}`);
+            const isHidden = dropdown.classList.contains('hidden');
+
+            // cerrar todos los demas
+            document.querySelectorAll('[id^="dropdown-"]').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('show');
+            });
+
+            // mostrar u ocultar el actual
+            if (isHidden) {
+                dropdown.classList.remove('hidden');
+                setTimeout(() => dropdown.classList.add('show'), 10); // animacion
+                console.log("menu desplegado para cita id:", id);
+            } else {
+                dropdown.classList.remove('show');
+                setTimeout(() => dropdown.classList.add('hidden'), 150);
+            }
+        }
+
+        // cerrar si haces click fuera
+        document.addEventListener('click', function (e) {
+            document.querySelectorAll('[id^="dropdown-"]').forEach(drop => {
+                if (!drop.contains(e.target) && !e.target.closest('button')) {
+                    drop.classList.remove('show');
+                    setTimeout(() => drop.classList.add('hidden'), 150);
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
