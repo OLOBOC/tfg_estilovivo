@@ -66,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/galeria/{id}/guardar', [GaleriaController::class, 'guardar'])->name('galeria.guardar');
     Route::get('/galeria/guardadas', [GaleriaController::class, 'guardadas'])->name('galeria.guardadas');
 
-    // agenda (peluquero)
+    // agenda del peluquero
     Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
     // admin gestiona peluqueros
@@ -80,16 +80,25 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    // ver cortes anteriores del cliente (filtrados con ?antes=fecha si se desea)
+    // ver cortes anteriores del cliente (opcional filtro ?antes=)
     Route::get('/clientes/{id}/cortes', [CorteController::class, 'verCortes'])->name('clientes.cortes');
 
     // formulario para subir nuevo corte
     Route::get('/clientes/{id}/cortes/create', [CorteController::class, 'crear'])->name('clientes.cortes.create');
 
-    // guardar el corte
+    // guardar corte
     Route::post('/clientes/{id}/cortes', [CorteController::class, 'guardar'])->name('clientes.cortes.guardar');
 
-    // cliente ve sus propios cortes en /mis-cortes
+    // editar corte
+    Route::get('/cortes/{id}/edit', [CorteController::class, 'edit'])->name('cortes.edit');
+
+    // actualizar corte
+    Route::put('/cortes/{id}', [CorteController::class, 'update'])->name('cortes.update');
+
+    // eliminar corte
+    Route::delete('/cortes/{id}', [CorteController::class, 'destroy'])->name('cortes.destroy');
+
+    // cliente ve sus propios cortes
     Route::get('/mis-cortes', [CorteController::class, 'misCortes'])->name('cliente.cortes');
 });
 
