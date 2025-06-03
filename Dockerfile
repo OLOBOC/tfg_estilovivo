@@ -16,7 +16,7 @@ COPY . .
 RUN composer install
 
 # generar clave de aplicacion
-RUN php artisan key:generate
+# RUN php artisan key:generate
 
 # exponer puerto
 EXPOSE 8000
