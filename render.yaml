@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: tfg-peluqueria
+    env: php
+    plan: free
+    repo: https://github.com/OLOBOC/tfg_estilovivo
+    region: oregon
+    buildCommand: |
+      cd tfg_estilovivo
+      composer install
+      php artisan migrate --force
+    startCommand: |
+      cd tfg_estilovivo
+      php artisan serve --host=0.0.0.0 --port=10000
+    rootDir: tfg_estilovivo
+    envVars:
+      - key: APP_KEY
+        value: base64:IReq5MR61K31D2ZJDc1ZVEwoZ5jTBUJgSUm/JM7p4YI=
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://tfg-peluqueria.onrender.com
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: SESSION_DRIVER
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
