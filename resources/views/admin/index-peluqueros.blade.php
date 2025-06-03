@@ -45,7 +45,7 @@
                         <tr>
                             <td colspan="4" class="px-4 py-4 text-center text-gray-500">
                                 No hay peluqueros registrados aún.
-                                <script>console.log("ℹ️ No hay peluqueros en la base de datos");</script>
+                                <script>console.log("No hay peluqueros en la base de datos");</script>
                             </td>
                         </tr>
                     @endforelse
@@ -57,7 +57,7 @@
         <div class="text-right mt-6">
             <a href="{{ route('admin.peluquero.create') }}"
                class="inline-block bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition">
-                ➕ Registrar nuevo peluquero
+                Registrar nuevo peluquero
             </a>
         </div>
 

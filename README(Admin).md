@@ -9,9 +9,7 @@ Utilizamos Laravel Tinker, una consola interactiva para ejecutar código PHP dir
 1. Abrir Laravel Tinker
 Desde la raíz del proyecto, ejecutar en la terminal:
 
-bash
-Copiar
-Editar
+
 php artisan tinker
 Esto abrirá una consola donde puedes escribir código directamente.
 
