@@ -17,7 +17,7 @@
     @include('partials.header.' . $rol)
 
     <main class="max-w-6xl mx-auto px-4 py-8">
-        <h2 class="text-3xl font-bold text-orange-700 text-center mb-6">Mis Citas Anteriores</h2>
+        <h2 class="text-3xl font-bold text-orange-700 text-center mb-6">Mis Estilos Anteriores</h2>
 
         @if (session('success'))
         <div class="bg-green-100 text-green-800 border border-green-300 p-4 rounded mb-6 text-center">

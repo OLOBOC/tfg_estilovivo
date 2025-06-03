@@ -10,6 +10,7 @@ class PeluqueroSeeder extends Seeder
 {
     public function run(): void
     {
+        // peluqueros
         User::create([
             'name' => 'Carlos Pérez',
             'email' => 'carlos@estilovivo.com',
@@ -30,5 +31,15 @@ class PeluqueroSeeder extends Seeder
             'password' => Hash::make('password'),
             'rol' => 'peluquero',
         ]);
+
+        // clientes
+        User::create([
+            'name' => 'Omar',
+            'email' => 'omar@gmail.com',
+            'password' => Hash::make('12345678'),
+            'rol' => 'cliente',
+        ]);
+
+      
     }
 }
