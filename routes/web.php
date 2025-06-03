@@ -20,6 +20,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/search', [BusquedaController::class, 'buscar'])->name('search');
+
 Route::get('/seccion-principal', function () {
     return view('partials.seccion-principal');
 })->name('seccion-principal');
@@ -65,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/galeria/{id}/guardar', [GaleriaController::class, 'guardar'])->name('galeria.guardar');
     Route::get('/galeria/guardadas', [GaleriaController::class, 'guardadas'])->name('galeria.guardadas');
 
-    // agenda del peluquero
+    // agenda peluquero
     Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
     // admin gestiona peluqueros
@@ -75,18 +76,20 @@ Route::middleware(['auth'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | CORTES (peluquero publica, cliente visualiza)
+    | CORTES
     |--------------------------------------------------------------------------
     */
 
-    // ver cortes anteriores del cliente
+    // cliente ve sus propios cortes
     Route::get('/mis-cortes', [CorteController::class, 'misCortes'])->name('cliente.cortes');
 
+    // peluquero ve cortes anteriores de un cliente
+    Route::get('/clientes/{id}/cortes', [CorteController::class, 'verCortes'])->name('clientes.cortes');
 
-    // formulario para subir nuevo corte
+    // formulario para publicar corte nuevo
     Route::get('/clientes/{id}/cortes/create', [CorteController::class, 'crear'])->name('clientes.cortes.create');
 
-    // guardar corte
+    // guardar nuevo corte
     Route::post('/clientes/{id}/cortes', [CorteController::class, 'guardar'])->name('clientes.cortes.guardar');
 
     // editar corte
@@ -97,9 +100,6 @@ Route::middleware(['auth'])->group(function () {
 
     // eliminar corte
     Route::delete('/cortes/{id}', [CorteController::class, 'destroy'])->name('cortes.destroy');
-
-    // cliente ve sus propios cortes
-    Route::get('/mis-cortes', [CorteController::class, 'misCortes'])->name('cliente.cortes');
 });
 
 /*

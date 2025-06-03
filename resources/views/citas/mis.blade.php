@@ -15,7 +15,7 @@
     <main class="p-4 sm:p-8">
         <h1 class="text-2xl sm:text-4xl font-extrabold text-orange-600 mb-6 text-center">Mis Citas</h1>
 
-        <!-- mensaje de éxito si existe -->
+        <!-- mensaje de exito si existe -->
         @if (session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6 text-center text-base">
                 {{ session('success') }}
@@ -44,6 +44,16 @@
                             <p><strong>Fecha:</strong> {{ $cita->fecha }}</p>
                             <p><strong>Hora:</strong> {{ $cita->hora }}</p>
                             <p><strong>Peluquero:</strong> {{ $cita->peluquero->name ?? 'No asignado' }}</p>
+
+                            <!-- mostrar servicios como etiquetas -->
+                            <p><strong>Servicios:</strong></p>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                @foreach (explode(',', $cita->servicio) as $servicio)
+                                    <span class="bg-orange-200 text-orange-800 text-xs font-medium px-2 py-1 rounded">
+                                        {{ ucfirst(trim(str_replace('_', ' ', $servicio))) }}
+                                    </span>
+                                @endforeach
+                            </div>
                         </div>
 
                         <div class="mt-3">
@@ -68,6 +78,7 @@
                             </div>
                         </div>
 
+                        <!-- formulario de cancelacion -->
                         <form method="POST" action="{{ route('citas.destroy') }}" class="text-right">
                             @csrf
                             @method('DELETE')
@@ -90,6 +101,16 @@
                             <p><strong>Fecha:</strong> {{ $cita->fecha }}</p>
                             <p><strong>Hora:</strong> {{ $cita->hora }}</p>
                             <p><strong>Peluquero:</strong> {{ $cita->peluquero->name ?? 'No asignado' }}</p>
+
+                            <!-- mostrar servicios como etiquetas -->
+                            <p><strong>Servicio:</strong></p>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                @foreach (explode(',', $cita->servicio) as $servicio)
+                                    <span class="bg-gray-300 text-gray-800 text-xs font-medium px-2 py-1 rounded">
+                                        {{ ucfirst(trim(str_replace('_', ' ', $servicio))) }}
+                                    </span>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 @empty

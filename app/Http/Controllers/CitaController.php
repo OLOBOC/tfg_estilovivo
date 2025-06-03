@@ -20,7 +20,7 @@ class CitaController extends Controller
     // Guardar la cita en la base de datos
     public function store(Request $request)
     {
-        // Validación de campos
+        // validacion de campos
         $request->validate([
             'fecha' => 'required|date|after_or_equal:today',
             'hora' => 'required',
@@ -29,27 +29,31 @@ class CitaController extends Controller
             'servicios.*' => 'string'
         ]);
 
-        // Verificar si ya existe una cita en la misma fecha, hora y peluquero
+        // comprobar si ya existe una cita con misma fecha, hora y peluquero
         $existe = Cita::where('fecha', $request->fecha)
             ->where('hora', $request->hora)
             ->where('peluquero_id', $request->peluquero_id)
             ->exists();
 
         if ($existe) {
-            return redirect()->back()->with('error', 'Esta hora ya está ocupada para ese peluquero.');
+            return redirect()->back()->with('error', 'esta hora ya esta ocupada para ese peluquero');
         }
 
-        // Crear nueva cita con servicios seleccionados
+        // convertir array de servicios a string separado por comas
+        $serviciosTexto = implode(', ', $request->servicios);
+
+        // crear nueva cita
         Cita::create([
             'user_id' => Auth::id(),
             'peluquero_id' => $request->peluquero_id,
             'fecha' => $request->fecha,
             'hora' => $request->hora,
-            'servicios' => $request->servicios // Se guarda como array (JSON)
+            'servicio' => $serviciosTexto // guardamos como texto simple
         ]);
 
-        return redirect()->route('citas.mis')->with('success', 'Cita reservada correctamente.');
+        return redirect()->route('citas.mis')->with('success', 'cita reservada correctamente');
     }
+
 
     // Devolver las horas ocupadas de un peluquero en una fecha
     public function horasOcupadas(Request $request)
