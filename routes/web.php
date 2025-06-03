@@ -11,16 +11,15 @@ use App\Http\Controllers\CorteController;
 
 /*
 |--------------------------------------------------------------------------
-| RUTAS PÚBLICAS
+| RUTAS PUBLICAS
 |--------------------------------------------------------------------------
 */
 
 Route::get('/', function () {
-    return view('welcome', ['mensaje' => 'Bienvenido cliente']);
+    return view('welcome', ['mensaje' => 'bienvenido cliente']);
 })->name('home');
 
 Route::get('/search', [BusquedaController::class, 'buscar'])->name('search');
-
 Route::get('/seccion-principal', function () {
     return view('partials.seccion-principal');
 })->name('seccion-principal');
@@ -29,7 +28,7 @@ Route::get('/peluqueria', [GaleriaController::class, 'index'])->name('galeria.in
 
 /*
 |--------------------------------------------------------------------------
-| RUTAS DE AUTENTICACIÓN
+| RUTAS DE AUTENTICACION
 |--------------------------------------------------------------------------
 */
 
@@ -52,10 +51,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/citas/crear', [CitaController::class, 'create'])->name('citas.create');
     Route::post('/citas/crear', [CitaController::class, 'store'])->name('citas.store');
     Route::get('/citas/mis', [CitaController::class, 'misCitas'])->name('citas.mis');
-    Route::get('/horas-ocupadas', [CitaController::class, 'horasOcupadas'])->name('citas.ocupadas');
-    Route::get('/cita-previa', [CitaController::class, 'create'])->name('cita-previa');
     Route::delete('/citas/eliminar', [CitaController::class, 'destroy'])->name('citas.destroy');
     Route::get('/citas/{cita}', [CitaController::class, 'show'])->name('citas.show');
+    Route::get('/horas-ocupadas', [CitaController::class, 'horasOcupadas'])->name('citas.ocupadas');
+    Route::get('/cita-previa', [CitaController::class, 'create'])->name('cita-previa');
 
     // galeria
     Route::get('/galeria/create', [GaleriaController::class, 'create'])->name('galeria.create');
@@ -80,8 +79,9 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    // ver cortes anteriores del cliente (opcional filtro ?antes=)
-    Route::get('/clientes/{id}/cortes', [CorteController::class, 'verCortes'])->name('clientes.cortes');
+    // ver cortes anteriores del cliente
+    Route::get('/mis-cortes', [CorteController::class, 'misCortes'])->name('cliente.cortes');
+
 
     // formulario para subir nuevo corte
     Route::get('/clientes/{id}/cortes/create', [CorteController::class, 'crear'])->name('clientes.cortes.create');
@@ -109,11 +109,11 @@ Route::middleware(['auth'])->group(function () {
 */
 
 Route::get('/admin/dashboard', function () {
-    return view('welcome', ['mensaje' => 'Bienvenido administrador']);
+    return view('welcome', ['mensaje' => 'bienvenido administrador']);
 })->name('admin.dashboard');
 
 Route::get('/peluquero/dashboard', function () {
-    return view('welcome', ['mensaje' => 'Bienvenido peluquero']);
+    return view('welcome', ['mensaje' => 'bienvenido peluquero']);
 })->name('peluquero.dashboard');
 
 Route::get('/dashboard', function () {
