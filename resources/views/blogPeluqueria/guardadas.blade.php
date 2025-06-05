@@ -21,8 +21,8 @@
 
   {{-- contenedor blanco con sombra como index --}}
   <div class="flex justify-center py-10">
-    
-     @include('partials.div-guardadas')
+
+    @include('partials.div-guardadas')
 
   </div>
 
@@ -46,6 +46,8 @@
       </form>
     </div>
   </div>
+  <!-- Footer -->
+  @include('partials.footer.footer')
 
   {{-- script de filtro y modal --}}
   <script>

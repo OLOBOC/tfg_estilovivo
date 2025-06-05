@@ -59,9 +59,10 @@
             </button>
         </div>
     </div>
-
+    <!-- Footer -->
+    @include('partials.footer.footer')
     <script>
-        const images = @json($cortes->pluck('imagen')->map(fn($img) => asset($img)));
+        const images = @json($cortes - > pluck('imagen') - > map(fn($img) => asset($img)));
         let currentIndex = 0;
 
         function openLightbox(index) {

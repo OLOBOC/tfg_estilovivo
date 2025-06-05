@@ -117,7 +117,8 @@
         <input type="hidden" name="peluquero_id" id="input-peluquero">
         <div id="servicios-hidden"></div>
     </form>
-
+    <!-- Footer -->
+    @include('partials.footer.footer')
 
 </body>
 

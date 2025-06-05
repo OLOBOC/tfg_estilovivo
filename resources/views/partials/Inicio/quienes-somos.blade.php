@@ -22,21 +22,21 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
             {{-- estilista 1 --}}
             <div class="bg-orange-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 text-center">
-               <img src="/build/img/quienes-somos/laura.png"  alt="Laura" class="w-32 h-32 mx-auto rounded-full object-cover mb-4 shadow-md">
+               <img src="/img/quienes-somos/laura.png"  alt="Laura" class="w-32 h-32 mx-auto rounded-full object-cover mb-4 shadow-md">
                 <h4 class="text-xl font-semibold text-gray-800">Laura</h4>
                 <p class="text-sm text-gray-600">experta en color</p>
             </div>
 
             {{-- estilista 2 --}}
             <div class="bg-orange-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 text-center">
-                <img src="/build/img/quienes-somos/ana.png" alt="Ana" class="w-32 h-32 mx-auto rounded-full object-cover mb-4 shadow-md">
+                <img src="/img/quienes-somos/ana.png" alt="Ana" class="w-32 h-32 mx-auto rounded-full object-cover mb-4 shadow-md">
                 <h4 class="text-xl font-semibold text-gray-800">Ana</h4>
                 <p class="text-sm text-gray-600">asesora de imagen y cortes modernos</p>
             </div>
 
             {{-- estilista 3 --}}
             <div class="bg-orange-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 text-center">
-                <img src="/build/img/quienes-somos/carlos.png" alt="Carlos" class="w-32 h-32 mx-auto rounded-full object-cover mb-4 shadow-md">
+                <img src="/img/quienes-somos/carlos.png" alt="Carlos" class="w-32 h-32 mx-auto rounded-full object-cover mb-4 shadow-md">
                 <h4 class="text-xl font-semibold text-gray-800">Carlos</h4>
                 <p class="text-sm text-gray-600">barbero y estilista urbano</p>
             </div>

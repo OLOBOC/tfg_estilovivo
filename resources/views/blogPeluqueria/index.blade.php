@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,10 +13,10 @@
 
   {{-- Header dinámico según rol --}}
   @auth
-    @php $rol = Auth::user()->rol; @endphp
-    @include('partials.header.' . ($rol === 'admin' ? 'admin' : ($rol === 'peluquero' ? 'peluquero' : 'auth')))
+  @php $rol = Auth::user()->rol; @endphp
+  @include('partials.header.' . ($rol === 'admin' ? 'admin' : ($rol === 'peluquero' ? 'peluquero' : 'auth')))
   @else
-    @include('partials.header.guest')
+  @include('partials.header.guest')
   @endauth
 
   <div class="flex justify-center py-10">
@@ -31,6 +32,8 @@
   <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-orange-600 text-white text-sm px-4 py-2 rounded-xl shadow-lg opacity-0 transition-opacity duration-300 z-50">
     <span id="toast-text"></span>
   </div>
+  <!-- Footer -->
+  @include('partials.footer.footer')
 
   {{-- Script para mostrar la galería al cargar --}}
   <script>
@@ -97,4 +100,5 @@
   </script>
 
 </body>
+
 </html>

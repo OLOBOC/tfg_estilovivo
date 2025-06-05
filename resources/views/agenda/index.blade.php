@@ -90,7 +90,7 @@
                     <p><strong>Cliente:</strong> {{ $cita->cliente->name ?? 'desconocido' }}</p>
                     <p><strong>Email:</strong> {{ $cita->cliente->email ?? '-' }}</p>
                     <p><strong>Servicio:</strong>
-                    <!-- mostrar servicio si existe -->
+                        <!-- mostrar servicio si existe -->
                         @if ($cita->servicio)
                         {{ ucwords(str_replace('_', ' ', $cita->servicio)) }}
                         @else
@@ -131,6 +131,8 @@
             @endforeach
         </div>
     </div>
+    <!-- Footer -->
+    @include('partials.footer.footer')
 
     {{-- script para manejar los dropdowns --}}
     <script>
