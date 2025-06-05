@@ -1,91 +1,117 @@
+# 💇‍♂️ Estilo Vivo – Gestión Web para Peluquería
 
-# 💇‍♂️ Estilo Vivo - Gestión Web para Peluquería
-
-Aplicación web desarrollada en Laravel para la gestión de citas en una peluquería. Permite a clientes registrarse y agendar citas, y a peluqueros ver su agenda del día.
+Aplicación web desarrollada con Laravel y Tailwind CSS como proyecto de TFG. Permite a los clientes **registrarse, iniciar sesión y pedir cita**, a los peluqueros **consultar su agenda del día**.Incluye galería de cortes y panel administrativo básico.
 
 ---
 
 ## 🧰 Requisitos
 
-- PHP >= 8.2
+- PHP >= 8.1
 - Composer
 - Node.js y NPM
-- Laravel Herd (opcional, recomendado en macOS)
-- Base de datos MySQL (o SQLite para desarrollo rápido)
-
+- Laravel 10
+- SQLite (por simplicidad en desarrollo)
+- Navegador web (Chrome, Firefox...)
+- Laravel Herd (opcional)
 ---
 
 ## ⚙️ Instalación paso a paso
 
-1. Clona el repositorio:
+1. **Clona o descarga el repositorio**  
 ```bash
-git clone https://github.com/tu-usuario/tu-repo.git
-cd tu-repo
+git clone https://github.com/usuario/tfg_estilovivo.git
+cd tfg_estilovivo
 ```
 
-2. Instala las dependencias:
+2. **Instala las dependencias de PHP**  
 ```bash
 composer install
+```
+
+3. **Instala las dependencias de JavaScript**  
+```bash
 npm install
 ```
 
-3. Copia el archivo `.env.example` y configúralo:
+4. **Copia el archivo de entorno y edítalo**  
 ```bash
 cp .env.example .env
 ```
 
-4. Genera la clave de la aplicación:
+5. **Configura la base de datos en `.env`**  
+```dotenv
+DB_CONNECTION=sqlite
+DB_DATABASE=./database/database.sqlite
+```
+
+6. **Crea el archivo de base de datos SQLite**  
+```bash
+type nul > database/database.sqlite
+```
+
+7. **Genera la clave de aplicación**  
 ```bash
 php artisan key:generate
 ```
 
-5. Configura tu base de datos en el archivo `.env`.
+8. **Limpia la caché de configuración**  
+```bash
+php artisan config:clear
+```
 
-6. Ejecuta las migraciones:
+9. **Ejecuta las migraciones de base de datos**  
 ```bash
 php artisan migrate
 ```
 
-7. Compila los assets (Tailwind + JS):
+10. **Compila los assets del frontend (Tailwind + JS)**  
 ```bash
 npm run dev
 ```
 
-8. Levanta el servidor local:
+11. **Inicia el servidor local**  
 ```bash
 php artisan serve
 ```
 
----
-
-## 🧪 Funcionalidades básicas
-
-- Registro e inicio de sesión (Laravel Breeze).
-- Roles: Cliente y Peluquero.
-- Gestión de citas por parte de clientes.
-- Agenda diaria para peluqueros.
-- Galería de cortes (próximamente).
+Accede desde tu navegador a:  
+[http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ---
 
-## 📸 Stack técnico
+## 🧪 Funcionalidades principales
 
-- Laravel 11
-- Tailwind CSS
-- Blade + Alpine.js
-- Laravel Breeze (autenticación)
-- Vite (para assets)
+- Registro e inicio de sesión con Laravel Breeze
+- Rol **cliente**: reserva de citas
+- Rol **peluquero**: vista de agenda diaria
+- Visualización de imágenes de cortes en `/public/img`
+- Interfaz con Tailwind CSS para diseño responsive
 
 ---
 
-## ✅ Notas
+## 📦 Stack tecnológico
 
-- Si usas Laravel Herd, solo necesitas colocar el proyecto en `~/Sites` y acceder desde `http://tfg-estilovivo.test`.
-- Recuerda configurar `.env` correctamente en cualquier equipo nuevo.
+- **Laravel 10**
+- **Tailwind CSS**
+- **Blade + Vite**
+- **SQLite** (modo desarrollo)
+- **Laravel Breeze** para autenticación
+- **Eloquent ORM** para gestión de base de datos
+
+---
+
+## 🛠 Despliegue
+
+Este proyecto está pensado para funcionar localmente en desarrollo.  
+Para producción se puede portar fácilmente a MySQL y desplegar en servicios como:
+- Laravel Forge
+- Railway
+- VPS con Apache/Nginx
 
 ---
 
 ## 👨‍💻 Autor
 
-Omar — TFG Grado en Desarrollo web
-
+**Omar Lobo Cuesta**  
+Proyecto de TFG — Desarrollo de Aplicaciones Web  
+2º DAW
