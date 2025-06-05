@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // variables principales del calendario y formulario
+    // referencias principales del calendario y del formulario
     const calendar = document.getElementById('calendar');
     const monthYear = document.getElementById('monthYear');
     const prevMonthBtn = document.getElementById('prevMonth');
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmarBtn = document.getElementById('confirmarBtn');
     const serviciosHidden = document.getElementById('servicios-hidden');
     const horasDisponibles = ["10:00", "11:00", "12:00", "15:00", "16:00", "17:00"];
+
     let currentDate = new Date();
     let citaSeleccionada = { fecha: null, hora: null, peluquero: null };
 
@@ -109,9 +110,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // al pulsar confirmar, validamos que hay servicios seleccionados
     confirmarBtn.addEventListener('click', function () {
         serviciosHidden.innerHTML = '';
         const seleccionados = document.querySelectorAll('.checkbox-servicio:checked');
+
+        // si no hay ninguno seleccionado, mostramos alerta y no enviamos
+        if (seleccionados.length === 0) {
+            alert('debes seleccionar al menos un servicio');
+            return;
+        }
+
+        // por cada checkbox marcado, creamos un input hidden con name="servicios[]"
         seleccionados.forEach((checkbox) => {
             const input = document.createElement('input');
             input.type = 'hidden';
@@ -119,9 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
             input.value = checkbox.value;
             serviciosHidden.appendChild(input);
         });
+
+        // finalmente mandamos el formulario
         document.getElementById('formCita').submit();
     });
 
+    // navegar meses
     prevMonthBtn.onclick = () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
         renderCalendario(currentDate);
@@ -132,5 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCalendario(currentDate);
     };
 
+    // render inicial
     renderCalendario(currentDate);
 });

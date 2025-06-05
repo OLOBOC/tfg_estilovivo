@@ -131,8 +131,7 @@
             @endforeach
         </div>
     </div>
-    <!-- Footer -->
-    @include('partials.footer.footer')
+    
 
     {{-- script para manejar los dropdowns --}}
     <script>

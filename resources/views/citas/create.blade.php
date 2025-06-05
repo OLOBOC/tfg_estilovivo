@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- necesario para responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario de Citas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -21,17 +20,14 @@
             color: white !important;
         }
     </style>
-    {{-- script js de citas --}}
+    {{-- se incluye el js que gestiona la logica de la cita --}}
     @vite('resources/js/components/citas.js')
 </head>
 
-
 <body class="bg-orange-50 min-h-screen font-sans">
 
-    <!-- header reutilizable -->
     @include('partials.header.auth')
 
-    <!-- contenido principal -->
     <main class="p-4 sm:p-8 max-w-3xl mx-auto w-full">
         <h1 class="text-2xl sm:text-3xl font-bold text-orange-600 mb-6 text-center">Reserva tu Cita</h1>
 
@@ -41,34 +37,30 @@
         </div>
         @endif
 
-        <!-- Navegación de meses -->
+        {{-- navegacion de meses --}}
         <div class="flex items-center justify-between mb-4">
             <button id="prevMonth" class="text-orange-600 hover:underline text-sm sm:text-base">&larr; Anterior</button>
             <h2 id="monthYear" class="text-base sm:text-xl font-semibold text-gray-800"></h2>
             <button id="nextMonth" class="text-orange-600 hover:underline text-sm sm:text-base">Siguiente &rarr;</button>
         </div>
 
-        <!-- Cabecera del calendario -->
+        {{-- cabecera del calendario --}}
         <div class="grid grid-cols-7 gap-2 text-center font-semibold text-gray-600 text-xs sm:text-sm mb-1">
-            <div>Lun</div>
-            <div>Mar</div>
-            <div>Mié</div>
-            <div>Jue</div>
-            <div>Vie</div>
-            <div>Sáb</div>
-            <div>Dom</div>
+            <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
         </div>
 
-        <!-- Días del calendario -->
+        {{-- dias del calendario --}}
         <div id="calendar" class="grid grid-cols-7 gap-2 mb-6"></div>
 
-        <!-- Horas disponibles -->
+        {{-- selector de horas --}}
         <div id="horas-container" class="hidden mb-6">
-            <h2 class="text-base sm:text-lg font-semibold mb-2 text-gray-800">Horas disponibles para <span id="selected-date"></span></h2>
+            <h2 class="text-base sm:text-lg font-semibold mb-2 text-gray-800">
+                Horas disponibles para <span id="selected-date"></span>
+            </h2>
             <div id="horas" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
         </div>
 
-        <!-- Selector de peluquero -->
+        {{-- selector de peluquero --}}
         <div id="peluquero-container" class="hidden mb-4">
             <label for="peluquero" class="block font-medium text-gray-700 mb-1">Selecciona peluquero:</label>
             <select id="peluquero" class="w-full border rounded px-4 py-2 text-sm">
@@ -79,15 +71,16 @@
             </select>
         </div>
 
-        <!-- Servicios disponibles -->
+        {{-- servicios disponibles --}}
         <div id="servicios-container" class="hidden mb-6">
             <label class="block font-medium text-gray-700 mb-2">Selecciona servicios:</label>
             <div id="lista-servicios" class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
                 @php
                 $serviciosDisponibles = [
-                'Corte', 'Lavado', 'Peinado', 'Tinte',
-                'Mechas', 'Moldeado', 'Alisado',
-                'Barba', 'Maquillaje', 'Manicura', 'Pedicura', 'Recogido', 'Extensiones'
+                    'Corte', 'Lavado', 'Peinado', 'Tinte',
+                    'Mechas', 'Moldeado', 'Alisado',
+                    'Barba', 'Maquillaje', 'Manicura', 'Pedicura',
+                    'Recogido', 'Extensiones'
                 ];
                 @endphp
                 @foreach ($serviciosDisponibles as $servicio)
@@ -101,7 +94,7 @@
             </div>
         </div>
 
-        <!-- Confirmar cita -->
+        {{-- boton confirmar --}}
         <div id="confirmar-container" class="hidden text-center">
             <button id="confirmarBtn" class="bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-700 transition">
                 Confirmar cita
@@ -109,7 +102,7 @@
         </div>
     </main>
 
-    <!-- Formulario oculto para envío -->
+    {{-- formulario oculto para envio --}}
     <form id="formCita" method="POST" action="{{ route('citas.store') }}">
         @csrf
         <input type="hidden" name="fecha" id="input-fecha">
@@ -117,9 +110,6 @@
         <input type="hidden" name="peluquero_id" id="input-peluquero">
         <div id="servicios-hidden"></div>
     </form>
-    <!-- Footer -->
-    @include('partials.footer.footer')
 
 </body>
-
 </html>

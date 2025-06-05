@@ -32,8 +32,7 @@
   <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-orange-600 text-white text-sm px-4 py-2 rounded-xl shadow-lg opacity-0 transition-opacity duration-300 z-50">
     <span id="toast-text"></span>
   </div>
-  <!-- Footer -->
-  @include('partials.footer.footer')
+
 
   {{-- Script para mostrar la galería al cargar --}}
   <script>
@@ -100,5 +99,5 @@
   </script>
 
 </body>
-
+ 
 </html>

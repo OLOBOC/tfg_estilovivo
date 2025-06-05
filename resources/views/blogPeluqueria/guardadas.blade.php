@@ -46,8 +46,7 @@
       </form>
     </div>
   </div>
-  <!-- Footer -->
-  @include('partials.footer.footer')
+ 
 
   {{-- script de filtro y modal --}}
   <script>

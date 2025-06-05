@@ -6,20 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cita extends Model
 {
-    
-    protected $fillable = ['user_id', 'peluquero_id', 'fecha', 'hora', 'servicios'];
-    protected $casts = [
-        'servicios' => 'array',
-    ];
+    // estos son los campos que se pueden rellenar masivamente
+    protected $fillable = ['user_id', 'peluquero_id', 'fecha', 'hora', 'servicio'];
 
+    // relacion con el cliente que reservo la cita
     public function cliente()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    // relacion con el peluquero asignado
     public function peluquero()
     {
         return $this->belongsTo(User::class, 'peluquero_id');
     }
 }
-

@@ -98,8 +98,7 @@
     @endif
     @endauth
   </main>
-  <!-- Footer -->
-  @include('partials.footer.footer')
+
 </body>
 
 </html>

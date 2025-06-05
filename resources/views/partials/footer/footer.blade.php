@@ -3,10 +3,10 @@
 
         <!-- enlaces -->
         <div class="flex space-x-4 mb-2 sm:mb-0">
-            <a href="/" class="hover:text-black transition">Inicio</a>
-            <a href="/citas" class="hover:text-black transition">Pedir Cita</a>
-            <a href="/servicios" class="hover:text-black transition">Servicios</a>
-            <a href="/contacto" class="hover:text-black transition">Contacto</a>
+            <a href="{{ url('/#inicio') }}" class="text-gray-700 hover:text-orange-600">Inicio</a>
+            <a href="{{ url('/#servicios') }}" class="text-gray-700 hover:text-orange-600">Servicios</a>
+            <a href="{{ route('galeria.index') }}" class="text-gray-700 hover:text-orange-600">Galería</a>
+            <a href="{{ url('/#ubicacion') }}" class="text-gray-700 hover:text-orange-600">Ubicación</a>
         </div>
 
         <!-- derechos -->

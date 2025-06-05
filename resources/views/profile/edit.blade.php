@@ -25,7 +25,7 @@
 
     <main class="py-12 px-4 max-w-5xl mx-auto">
         <div class="text-center mb-12">
-            <h1 class="text-4xl font-extrabold text-orange-600">area personal</h1>
+            <h1 class="text-4xl font-extrabold text-orange-600">Area personal</h1>
             <p class="text-gray-600 mt-2 text-lg">consulta o modifica tu informacion de perfil y seguridad</p>
         </div>
 

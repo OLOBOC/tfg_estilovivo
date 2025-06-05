@@ -119,8 +119,7 @@
     @endif
     @endauth
   </main>
-  <!-- Footer -->
-  @include('partials.footer.footer')
+  
 
   <script>
     function vistaPrevia(event) {
