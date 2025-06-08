@@ -38,38 +38,34 @@ npm install
 cp .env.example .env
 ```
 
-5. **Configura la base de datos en `.env`**  
+5. **Comprueba la configuracion de la base de datos en `.env`**  
 ```dotenv
 DB_CONNECTION=sqlite
 DB_DATABASE=./database/database.sqlite
 ```
 
-6. **Crea el archivo de base de datos SQLite**  
-```bash
-type nul > database/database.sqlite
-```
-
-7. **Genera la clave de aplicación**  
+6. **Genera la clave de aplicación**  
 ```bash
 php artisan key:generate
 ```
 
-8. **Limpia la caché de configuración**  
+7. **Limpia la caché de configuración**  
 ```bash
 php artisan config:clear
 ```
 
-9. **Ejecuta las migraciones de base de datos**  
+8. **Ejecuta las migraciones de base de datos con los seeders**  
 ```bash
+php artisan migrate:fresh --seed
 php artisan migrate
 ```
 
-10. **Compila los assets del frontend (Tailwind + JS)**  
+9. **Compila los assets del frontend (Tailwind + JS)**  
 ```bash
 npm run dev
 ```
 
-11. **Inicia el servidor local**  
+10. **Inicia el servidor local**  
 ```bash
 php artisan serve
 ```

@@ -5,7 +5,7 @@
 
         {{-- IMAGEN A LA IZQUIERDA --}}
         <div class="w-full md:w-1/2 animate-fade-in">
-            <img src="/build/img/portada.png" alt="Servicio en peluquería"
+            <img src="/img/portada.png" alt="Servicio en peluquería"
                 class="rounded-xl shadow-lg w-full h-auto object-cover max-h-[500px]">
         </div>
 
