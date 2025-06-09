@@ -11,7 +11,7 @@
 
     <!-- Imagen -->
     <div class="flex justify-center mb-6">
-        <img src="{{ asset('build/img/portada.png') }}" alt="Estilo Vivo" class="rounded-xl w-70 h-48 object-cover shadow-md">
+        <img src="/img/portada.png" alt="Estilo Vivo" class="rounded-xl w-70 h-48 object-cover shadow-md">
     </div>
 
     <!-- Botón principal -->

@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Registrar Peluquero</title>
-    {{-- Carga estilos de Tailwind desde Vite --}}
+    {{-- carga estilos de tailwind desde vite --}}
     @vite('resources/css/app.css')
+    <meta name="viewport" content="width=device-width, initial-scale=1"> {{-- hace que sea responsive --}}
 </head>
 <body class="bg-orange-50 min-h-screen font-sans text-gray-800">
 
-    {{-- Header del panel admin --}}
+    {{-- header del panel admin --}}
     @include('partials.header.admin')
 
-    {{-- Contenedor principal del formulario --}}
-    <div class="max-w-3xl mx-auto mt-12 bg-white p-8 rounded shadow">
-        <h2 class="text-2xl font-bold text-orange-600 mb-6">Registrar nuevo peluquero</h2>
+    {{-- contenedor principal del formulario --}}
+    <div class="max-w-3xl mx-auto mt-6 px-4 sm:px-6 lg:px-8 bg-white p-6 sm:p-8 rounded shadow">
+        <h2 class="text-xl sm:text-2xl font-bold text-orange-600 mb-6">Registrar nuevo peluquero</h2>
 
-        {{-- Mostrar mensaje de éxito si existe --}}
+        {{-- mostrar mensaje de exito si existe --}}
         @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
                 {{ session('success') }}
-                <script>console.log("✅ Peluquero registrado correctamente");</script>
+                <script>console.log("✅ peluquero registrado correctamente");</script>
             </div>
         @endif
 
-        {{-- Mostrar errores de validación si los hay --}}
+        {{-- mostrar errores de validacion si los hay --}}
         @if($errors->any())
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
                 <ul class="list-disc pl-5">
@@ -31,44 +32,44 @@
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-                <script>console.log("❌ Errores en el formulario de peluquero");</script>
+                <script>console.log("❌ errores en el formulario de peluquero");</script>
             </div>
         @endif
 
-        {{-- Formulario de registro --}}
+        {{-- formulario de registro --}}
         <form action="{{ route('admin.peluquero.store') }}" method="POST" class="space-y-6"
-              onsubmit="console.log('📤 Enviando formulario de registro de peluquero...')">
+              onsubmit="console.log('📤 enviando formulario de registro de peluquero...')">
             @csrf
 
-            {{-- Campo: Nombre --}}
+            {{-- campo: nombre --}}
             <div>
-                <label class="block font-semibold mb-1">Nombre</label>
+                <label class="block font-semibold mb-1">nombre</label>
                 <input type="text" name="name" required
                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm"
-                       placeholder="Ej: Juan Martínez" />
+                       placeholder="ej: juan martinez" />
             </div>
 
-            {{-- Campo: Email --}}
+            {{-- campo: email --}}
             <div>
-                <label class="block font-semibold mb-1">Email</label>
+                <label class="block font-semibold mb-1">email</label>
                 <input type="email" name="email" required
                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm"
                        placeholder="ejemplo@correo.com" />
             </div>
 
-            {{-- Campo: Contraseña --}}
+            {{-- campo: contraseña --}}
             <div>
-                <label class="block font-semibold mb-1">Contraseña</label>
+                <label class="block font-semibold mb-1">contraseña</label>
                 <input type="password" name="password" required
                        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm"
-                       placeholder="Mínimo 6 caracteres" />
+                       placeholder="minimo 6 caracteres" />
             </div>
 
-            {{-- Botón de enviar --}}
+            {{-- boton de enviar --}}
             <div class="text-right">
                 <button type="submit"
-                        class="bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-700 transition">
-                    Registrar
+                        class="w-full sm:w-auto bg-orange-600 text-white px-6 py-2 rounded hover:bg-orange-700 transition">
+                    registrar
                 </button>
             </div>
         </form>
