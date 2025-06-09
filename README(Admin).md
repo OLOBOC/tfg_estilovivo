@@ -9,16 +9,14 @@ Utilizamos Laravel Tinker, una consola interactiva para ejecutar código PHP dir
 1. Abrir Laravel Tinker
 Desde la raíz del proyecto, ejecutar en la terminal:
 
-
 php artisan tinker
+
 Esto abrirá una consola donde puedes escribir código directamente.
 
 2. Ejecutar el siguiente código
 Pega este bloque dentro de la consola Tinker:
 
-php
-Copiar
-Editar
+
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
