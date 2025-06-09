@@ -6,7 +6,12 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-      <img id="modal-img" src="" class="max-w-full max-h-[70vh] mx-auto object-contain rounded-md mb-4">
+      <img id="modal-img"
+     src="{{ asset('img/portada.png') }}"
+     alt="Vista ampliada del servicio"
+     class="max-w-full max-h-[70vh] mx-auto object-contain rounded-md mb-4">
+
+
       <h3 id="modal-title" class="text-xl font-semibold text-orange-600 mb-1"></h3>
       <p id="modal-service" class="text-sm text-gray-500 mb-1"></p>
       <p id="modal-description" class="text-sm text-gray-700"></p>
