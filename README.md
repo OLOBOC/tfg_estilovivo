@@ -100,9 +100,13 @@ Accede desde tu navegador a:
 
 La aplicación necesita PHP/Laravel, una base de datos persistente y variables de entorno de producción. SQLite local sirve para desarrollo, pero no debe usarse como base de datos de una instancia serverless.
 
-**No está lista para desplegarse en Vercel todavía.** Vercel no ofrece Laravel como framework de despliegue automático; aunque existe un runtime PHP comunitario, este repositorio aún no tiene configuración de runtime/rutas para Vercel ni una base de datos, almacenamiento y correo de producción configurados. No subas `.env` ni credenciales al repositorio. Configura primero esos servicios y sus variables en el panel de despliegue y verifica registro, inicio de sesión y reservas en un entorno de pruebas.
+El repositorio incluye una configuración inicial de Vercel: Vite compila los recursos, `public` sirve los archivos estáticos y el runtime comunitario `vercel-php` deriva las peticiones de Laravel a `api/index.php`. Este runtime no es un runtime oficial de Vercel; confirma su disponibilidad durante el despliegue.
 
-Como alternativa más directa para una aplicación Laravel, utiliza un proveedor con soporte de PHP persistente (por ejemplo, Laravel Cloud, Railway o un VPS). En cualquier proveedor, completa antes de publicar los datos reales del titular, contacto, conservación de datos y proveedores en las páginas de aviso legal y privacidad.
+Antes de desplegar, añade en la configuración de Vercel —no en Git— las variables `APP_KEY` (generada con `php artisan key:generate --show`), `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL`, `LARAVEL_STORAGE_PATH=/tmp/storage`, `VIEW_COMPILED_PATH=/tmp/views`, `LOG_CHANNEL=stderr`, una conexión de base de datos gestionada (`DB_CONNECTION=pgsql` y `DB_URL`), `SESSION_DRIVER=database`, `CACHE_STORE=database`, y `SESSION_SECURE_COOKIE=true`. Migra el esquema a esa base de datos gestionada antes de probar registro, acceso y reservas. No uses SQLite local, ni los drivers de sesión o caché `array` para producción: las funciones serverless no conservan su disco o memoria entre ejecuciones.
+
+La galería guarda imágenes subidas en el disco local `public`, que no persiste en Vercel. El adaptador Laravel para S3 ya está incluido en Composer. Configura un almacenamiento de objetos compatible con S3, selecciona `FILESYSTEM_DISK=s3` y proporciona `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`, `AWS_BUCKET`, `AWS_URL` y, cuando el proveedor lo requiera, `AWS_ENDPOINT` antes de activar las subidas. Configura también un proveedor SMTP si vas a utilizar correo o recuperación de contraseñas. No subas `.env`, contraseñas ni claves al repositorio.
+
+Esta configuración permite intentar el despliegue del servidor, pero no provisiona esos servicios ni verifica sus credenciales. Comprueba el log de la primera compilación y prueba todas las funciones en Preview. Antes de publicar al público, completa los datos reales del titular, contacto, conservación de datos y proveedores en las páginas de aviso legal y privacidad.
 
 ---
 
