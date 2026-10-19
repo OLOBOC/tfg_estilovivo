@@ -1,16 +1,18 @@
-{{-- seccion de ubicacion actualizada con mapa real de gijon --}}
-<section id="ubicacion" class="bg-orange-50 py-16 px-6">
-    <div class="max-w-4xl mx-auto text-center">
-        <h3 class="text-3xl font-bold mb-6">¿Dónde estamos?</h3>
-        <p class="text-gray-700 mb-4">C. Lope de Vega, 4, Gijon-Este, 33204 Gijón, Asturias</p>
-
-        {{-- iframe con ubicacion real en google maps --}}
-        <iframe
-            class="w-full h-64 md:h-80 rounded-lg shadow-md"
-            loading="lazy"
-            allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2880.1503122605517!2d-5.655662724348101!3d43.533188471102834!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd367b7cf2b57d17%3A0x193db91ea4ee7575!2sTUNIVERS%20Formaci%C3%B3n%20Profesional!5e0!3m2!1ses!2ses!4v1716998560000!5m2!1ses!2ses">
-        </iframe>
+<section id="ubicacion" class="bg-[#eae4db] px-6 py-20 sm:py-24">
+    <div class="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+            <p class="text-xs font-semibold uppercase tracking-[.25em] text-[#a96242]">Estamos cerca</p>
+            <h2 class="mt-4 font-serif text-4xl font-medium text-[#292722] sm:text-5xl">Ven a conocernos.</h2>
+            <address class="mt-5 not-italic leading-7 text-[#514c44]">
+                C. Lope de Vega, 4<br>
+                33204 Gijón, Asturias
+            </address>
+        </div>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Calle+Lope+de+Vega+4%2C+33204+Gij%C3%B3n"
+            target="_blank" rel="noopener noreferrer"
+            class="inline-flex min-h-12 items-center justify-center rounded-full border border-[#292722]/30 px-7 text-sm font-semibold text-[#292722] transition hover:border-[#292722] hover:bg-[#292722] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#a96242]">
+            Abrir indicaciones
+            <span class="sr-only">(se abre en una pestaña nueva)</span>
+        </a>
     </div>
 </section>

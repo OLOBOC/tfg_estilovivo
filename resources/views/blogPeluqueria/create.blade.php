@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Publicar nuevo estilo</title>
   @vite('resources/css/app.css')
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-orange-100 font-sans">
@@ -34,7 +33,9 @@
       {{-- Interfaz inicial tipo Instagram --}}
       <div id="promptUpload" class="cursor-pointer border-2 border-dashed border-orange-400 rounded-xl p-8 hover:bg-orange-50 transition"
         onclick="document.getElementById('imagenInput').click(); console.log('Seleccionando imagen...')">
-        <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" alt="Subir" class="w-24 h-24 mx-auto mb-4 opacity-70">
+        <svg class="mx-auto mb-4 h-24 w-24 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16.5V19a1 1 0 001 1h14a1 1 0 001-1v-2.5M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/>
+        </svg>
         <p class="text-lg text-gray-600">¿Quieres subir una imagen?</p>
       </div>
 
@@ -144,6 +145,7 @@
       }
     }
   </script>
+  @include('partials.footer.footer')
 </body>
 
 </html>

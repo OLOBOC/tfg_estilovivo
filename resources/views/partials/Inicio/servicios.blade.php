@@ -1,43 +1,28 @@
-{{-- SECCIÓN DE SERVICIOS --}}
-
-<section id="servicios" class="bg-[#f7f4f1] py-24 px-6">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
-
-        {{-- IMAGEN A LA IZQUIERDA --}}
-        <div class="w-full md:w-1/2 animate-fade-in">
-            <img src="/img/portada.png" alt="Servicio en peluquería"
-                class="rounded-xl shadow-lg w-full h-auto object-cover max-h-[500px]">
+<section id="servicios" class="px-6 py-20 sm:py-28">
+    <div class="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-20">
+        <div class="overflow-hidden rounded-3xl bg-[#e9e1d6]">
+            <img src="{{ asset('img/portada.png') }}" alt="Personas con distintos cortes y estilos" loading="lazy" class="h-full max-h-[34rem] min-h-[20rem] w-full object-cover">
         </div>
 
-        {{-- CONTENIDO A LA DERECHA --}}
-        <div class="w-full md:w-1/2 text-gray-800 animate-fade-in">
-            <p class="text-sm uppercase tracking-widest text-gray-500 mb-3">la experiencia estilo vivo</p>
-
-            <h2 class="text-4xl font-bold mb-6 leading-tight">
-                MÁS QUE UN SERVICIO, UNA EXPERIENCIA PERSONALIZADA
-            </h2>
-
-            <p class="text-base md:text-lg text-gray-700 mb-6">
-                Ofrecemos cortes, coloración, peinados y tratamientos pensados para tu estilo. Nuestro equipo trabaja con productos de alta calidad, buscando siempre el equilibrio entre estética, salud capilar y bienestar.
+        <div>
+            <p class="text-xs font-semibold uppercase tracking-[.25em] text-[#a96242]">La experiencia Estilo Vivo</p>
+            <h2 class="mt-4 font-serif text-4xl font-medium leading-tight text-[#292722] sm:text-5xl">Un cuidado pensado para ti.</h2>
+            <p class="mt-6 max-w-xl leading-7 text-[#6d685f]">
+                Cortes, coloración y peinados para encontrar el estilo que te representa. Cuéntanos qué tienes en mente y diseñaremos contigo el resultado.
             </p>
 
-            <ul class="grid sm:grid-cols-2 gap-2 text-sm text-gray-700 mb-8">
-                <li> Corte, lavado y peinado</li>
-                <li> Tinte, mechas y balayage</li>
-                <li> Tratamientos de keratina</li>
-                <li> Maquillaje y recogidos</li>
-                <li> Manicura y pedicura</li>
-                <li> Barbería y arreglo de barba</li>
+            <ul class="mt-8 grid gap-x-8 gap-y-4 text-sm text-[#514c44] sm:grid-cols-2">
+                <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-[#a96242]"></span>Corte, lavado y peinado</li>
+                <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-[#a96242]"></span>Tinte, mechas y balayage</li>
+                <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-[#a96242]"></span>Tratamientos capilares</li>
+                <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-[#a96242]"></span>Recogidos y peinados</li>
+                <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-[#a96242]"></span>Manicura y pedicura</li>
+                <li class="flex items-center gap-3"><span class="h-1.5 w-1.5 rounded-full bg-[#a96242]"></span>Barbería y arreglo de barba</li>
             </ul>
 
-            <a href="{{ route('citas.create') }}"
-                class="inline-block bg-[#b88c74] hover:bg-[#a77760] text-white font-semibold py-3 px-8 rounded-full shadow-md transition duration-300">
-                RESERVAR AHORA
+            <a href="{{ route('login') }}" class="mt-9 inline-flex min-h-12 items-center justify-center rounded-full bg-[#292722] px-7 text-sm font-semibold text-white transition hover:bg-[#a96242] focus:outline-none focus:ring-2 focus:ring-[#a96242] focus:ring-offset-2">
+                Encuentra tu momento
             </a>
         </div>
     </div>
-
-    <script>
-        console.log("SECCIÓN SERVICIOS CARGADA CORRECTAMENTE")
-    </script>
 </section>

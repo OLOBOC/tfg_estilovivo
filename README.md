@@ -6,10 +6,10 @@ Aplicación web desarrollada con Laravel y Tailwind CSS como proyecto de TFG. Pe
 
 ## 🧰 Requisitos
 
-- PHP >= 8.1
+- PHP >= 8.2
 - Composer
 - Node.js y NPM
-- Laravel 10
+- Laravel 12
 - SQLite (por simplicidad en desarrollo)
 - Navegador web (Chrome, Firefox...)
 - Laravel Herd (opcional)
@@ -54,10 +54,10 @@ php artisan key:generate
 php artisan config:clear
 ```
 
-8. **Ejecuta las migraciones de base de datos con los seeders**  
+8. **Ejecuta las migraciones y, si necesitas datos de ejemplo, los seeders**
 ```bash
-php artisan migrate:fresh --seed
 php artisan migrate
+php artisan db:seed
 ```
 
 9. **Compila los assets del frontend (Tailwind + JS)**  
@@ -87,7 +87,7 @@ Accede desde tu navegador a:
 
 ## 📦 Stack tecnológico
 
-- **Laravel 10**
+- **Laravel 12**
 - **Tailwind CSS**
 - **Blade + Vite**
 - **SQLite** (modo desarrollo)
@@ -98,11 +98,11 @@ Accede desde tu navegador a:
 
 ## 🛠 Despliegue
 
-Este proyecto está pensado para funcionar localmente en desarrollo.  
-Para producción se puede portar fácilmente a MySQL y desplegar en servicios como:
-- Laravel Forge
-- Railway
-- VPS con Apache/Nginx
+La aplicación necesita PHP/Laravel, una base de datos persistente y variables de entorno de producción. SQLite local sirve para desarrollo, pero no debe usarse como base de datos de una instancia serverless.
+
+**No está lista para desplegarse en Vercel todavía.** Vercel no ofrece Laravel como framework de despliegue automático; aunque existe un runtime PHP comunitario, este repositorio aún no tiene configuración de runtime/rutas para Vercel ni una base de datos, almacenamiento y correo de producción configurados. No subas `.env` ni credenciales al repositorio. Configura primero esos servicios y sus variables en el panel de despliegue y verifica registro, inicio de sesión y reservas en un entorno de pruebas.
+
+Como alternativa más directa para una aplicación Laravel, utiliza un proveedor con soporte de PHP persistente (por ejemplo, Laravel Cloud, Railway o un VPS). En cualquier proveedor, completa antes de publicar los datos reales del titular, contacto, conservación de datos y proveedores en las páginas de aviso legal y privacidad.
 
 ---
 

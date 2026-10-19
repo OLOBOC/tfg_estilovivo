@@ -1,143 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estilo Vivo</title>
-    @vite('resources/css/app.css')
-    <style>
-        .modal-fade {
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .modal-hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.95);
-        }
-
-        .modal-visible {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1);
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cortes, color y cuidado personal en Estilo Vivo, en Gijón. Conoce al equipo y reserva tu próxima cita.">
+    <meta name="theme-color" content="#f8f6f2">
+    <title>Estilo Vivo | Peluquería en Gijón</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<body class="bg-[#f8f6f2] font-sans text-[#292722] antialiased">
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-5 focus:py-3 focus:shadow-lg">
+        Saltar al contenido
+    </a>
 
-<body class="bg-white text-gray-800 font-sans">
-
-    <!-- Header según el rol -->
-    @auth
-    @php
-    $rol = Auth::user()->rol;
-    @endphp
-
-    @if ($rol === 'admin')
-    @include('partials.header.admin')
-    @elseif ($rol === 'peluquero')
-    @include('partials.header.peluquero') {{-- Nuevo header para peluqueros --}}
-    @else
-    @include('partials.header.auth')
-    @endif
-    @else
     @include('partials.header.guest')
-    @endauth
 
+    <main id="contenido">
+        <section id="inicio" class="relative isolate flex min-h-[76vh] items-center overflow-hidden bg-[#28251f] px-6 py-24 text-white sm:min-h-[82vh] sm:px-10">
+            <div class="absolute inset-0 -z-10 bg-cover bg-center" style="background-image: linear-gradient(90deg, rgba(25, 24, 21, .82), rgba(25, 24, 21, .3)), url('{{ asset('img/portada.png') }}');"></div>
+            <div class="mx-auto w-full max-w-7xl">
+                <p class="mb-6 text-xs font-semibold uppercase tracking-[.3em] text-[#e5c6a7]">Peluquería · Gijón</p>
+                <h1 class="max-w-3xl font-serif text-5xl font-medium leading-[1.08] sm:text-6xl lg:text-7xl">Un estilo que se siente como tú.</h1>
+                <p class="mt-6 max-w-xl text-base leading-7 text-white/80 sm:text-lg">
+                    Cortes, color y cuidado personal con tiempo para escucharte y encontrar tu próximo look.
+                </p>
+                <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+                    <a href="{{ route('login') }}" class="inline-flex min-h-12 items-center justify-center rounded-full bg-[#a96242] px-7 text-sm font-semibold text-white transition hover:bg-[#914e33] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#292722]">
+                        Reserva tu cita
+                    </a>
+                    <a href="#servicios" class="inline-flex min-h-12 items-center justify-center rounded-full border border-white/60 px-7 text-sm font-semibold text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white">
+                        Descubre Estilo Vivo
+                    </a>
+                </div>
+            </div>
+            <p class="absolute bottom-6 right-8 hidden text-xs uppercase tracking-[.22em] text-white/70 sm:block">Tu momento, tu estilo</p>
+        </section>
 
-
-
-
-
-    <!-- Hero principal -->
-    <section id="inicio" class="bg-gradient-to-b from-orange-100 to-white text-center py-20 px-6">
-        <h2 class="text-4xl md:text-5xl font-bold mb-4">Tu estilo, nuestra pasión</h2>
-        <p class="text-xl text-gray-600 mb-6">Expertos en cortes, coloración y estilo moderno para ti.</p>
-        <a href="{{ route('citas.create') }}" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">Cita previa</a>
-    </section>
-
-    @if (isset($mensaje))
-    <script>
-        // Mostrar el mensaje en la consola del navegador
-        console.log("{{ $mensaje }}");
-    </script>
-    @endif
-
-
-    <!-- Quiénes somos -->
-    @include('partials.Inicio.quienes-somos')
-    <script>
-        console.log("seccion quienes somos cargada")
-    </script>
-
-
-    <!-- Servicios -->
-    <section id="servicios" class="bg-orange-50 py-16 px-6">
+        @include('partials.Inicio.quienes-somos')
         @include('partials.Inicio.servicios')
+        @include('partials.Inicio.mapa.ubicacion')
+    </main>
 
-    </section>
-
-    <!-- Ubicación -->
-    @include('partials.Inicio.mapa.ubicacion')
-
-    <!-- Footer -->
     @include('partials.footer.footer')
-
-    <!-- Modal para invitados (una vez) -->
-    @guest
-    <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[9999]" style="display: none;">
-        <div id="modal-principal" class="modal-fade modal-hidden">
-            @include('partials.seccion-principal')
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Verificamos si el modal ya se ha mostrado antes
-            if (!localStorage.getItem('modalEstiloVivoVisto')) {
-                console.log("Mostrando modal a invitado nuevo");
-
-                const backdrop = document.getElementById('modal-backdrop');
-                const modal = document.getElementById('modal-principal');
-
-                if (backdrop && modal) {
-                    // Mostrar el modal
-                    backdrop.style.display = 'flex';
-                    setTimeout(() => {
-                        modal.classList.remove('modal-hidden');
-                        modal.classList.add('modal-visible');
-                    }, 10);
-
-                    // Guardamos que ya se mostró
-                    localStorage.setItem('modalEstiloVivoVisto', 'true');
-
-                    // Permite cerrar clicando fuera
-                    backdrop.addEventListener('click', (e) => {
-                        if (e.target === backdrop) {
-                            modal.classList.remove('modal-visible');
-                            modal.classList.add('modal-hidden');
-                            setTimeout(() => backdrop.style.display = 'none', 300);
-                        }
-                    });
-                }
-            } else {
-                console.log("Modal ya fue visto por este invitado");
-            }
-        });
-
-        // Función para cerrar desde el botón (usa class en el botón HTML)
-        function cerrarModal() {
-            const modal = document.getElementById('modal-principal');
-            const backdrop = document.getElementById('modal-backdrop');
-
-            modal.classList.remove('modal-visible');
-            modal.classList.add('modal-hidden');
-            setTimeout(() => backdrop.style.display = 'none', 300);
-        }
-    </script>
-    @endguest
-
-
 </body>
-
 </html>

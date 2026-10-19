@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Publicar Nuevo Corte</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite('resources/css/app.css')
 </head>
 <body class="bg-orange-50 text-gray-800 min-h-screen relative">
 
@@ -94,5 +94,6 @@
 
     </main>
 
+    @include('partials.footer.footer')
 </body>
 </html>

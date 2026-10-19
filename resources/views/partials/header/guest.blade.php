@@ -1,67 +1,55 @@
-<!-- Header para visitantes no autenticados -->
-<header class="bg-white shadow-md px-6 py-4">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
+<header class="sticky top-0 z-40 border-b border-black/5 bg-[#f8f6f2]/95 backdrop-blur">
+    <div class="mx-auto flex min-h-[4.5rem] max-w-7xl items-center justify-between gap-5 px-5 sm:px-8">
+        <a href="{{ route('home') }}" class="flex items-center gap-3 rounded focus:outline-none focus:ring-2 focus:ring-[#a96242]" aria-label="Estilo Vivo, inicio">
+            <span class="grid h-10 w-10 place-items-center rounded-full bg-[#292722] font-serif text-lg text-white" aria-hidden="true">EV</span>
+            <span class="font-serif text-xl font-semibold tracking-tight text-[#292722]">Estilo Vivo</span>
+        </a>
 
-        <!-- Logo que redirige al inicio (Welcome) -->
-        <a href="{{ url('/') }}" class="text-2xl font-bold text-orange-600">Estilo Vivo</a>
+        <nav class="hidden items-center gap-7 text-sm md:flex" aria-label="Navegación principal">
+            <a href="{{ route('home') }}#inicio" class="text-[#5f5a51] transition hover:text-[#a96242]">Inicio</a>
+            <a href="{{ route('home') }}#quienes-somos" class="text-[#5f5a51] transition hover:text-[#a96242]">El equipo</a>
+            <a href="{{ route('home') }}#servicios" class="text-[#5f5a51] transition hover:text-[#a96242]">Servicios</a>
+            <a href="{{ route('galeria.index') }}" class="text-[#5f5a51] transition hover:text-[#a96242]">Galería</a>
+            <a href="{{ route('home') }}#ubicacion" class="text-[#5f5a51] transition hover:text-[#a96242]">Dónde estamos</a>
+            <a href="{{ route('login') }}" class="rounded-full bg-[#a96242] px-5 py-3 font-semibold text-white transition hover:bg-[#914e33]">Pide cita</a>
+        </nav>
 
-        <!-- Iconos que solo se muestran en móvil: lupa y menú hamburguesa -->
-        <div class="flex items-center space-x-4 md:hidden">
-            <!-- Botón para mostrar el buscador -->
-            <button onclick="document.getElementById('searchBox').classList.toggle('hidden')" class="text-gray-600 hover:text-orange-600 focus:outline-none">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        <div class="flex items-center gap-2 md:hidden">
+            <button type="button" aria-label="Mostrar búsqueda" aria-expanded="false" aria-controls="searchBox"
+                onclick="const box = document.getElementById('searchBox'); const open = box.classList.toggle('hidden'); this.setAttribute('aria-expanded', String(!open));"
+                class="grid h-10 w-10 place-items-center rounded-full text-[#514c44] hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-[#a96242]">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" stroke-width="1.7"></circle>
+                    <path stroke-linecap="round" stroke-width="1.7" d="m16 16 4 4"></path>
                 </svg>
             </button>
-
-            <!-- Botón hamburguesa para mostrar el menú móvil -->
-            <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')" class="text-gray-600 hover:text-orange-600 focus:outline-none">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 6h16M4 12h16M4 18h16"/>
+            <button type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu"
+                onclick="const menu = document.getElementById('mobileMenu'); const open = menu.classList.toggle('hidden'); this.setAttribute('aria-expanded', String(!open)); this.setAttribute('aria-label', open ? 'Abrir menú' : 'Cerrar menú');"
+                class="grid h-10 w-10 place-items-center rounded-full text-[#514c44] hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-[#a96242]">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-width="1.7" d="M4 7h16M4 12h16M4 17h16"></path>
                 </svg>
             </button>
         </div>
-
-        <!-- Navegación principal (visible solo en escritorio) -->
-        <nav class="hidden md:flex items-center space-x-6 text-sm">
-            <!-- Enlaces a secciones del Welcome usando URL absoluta para funcionar desde cualquier página -->
-            <a href="{{ url('/#inicio') }}" class="text-gray-700 hover:text-orange-600">Inicio</a>
-            <a href="{{ url('/#quienes-somos') }}" class="text-gray-700 hover:text-orange-600">Quiénes somos</a>
-            <a href="{{ url('/#servicios') }}" class="text-gray-700 hover:text-orange-600">Servicios</a>
-            <a href="{{ route('galeria.index') }}" class="text-gray-700 hover:text-orange-600">Galería</a>
-            <a href="{{ url('/#ubicacion') }}" class="text-gray-700 hover:text-orange-600">Ubicación</a>
-            <a href="{{ route('login') }}" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition">Cita previa</a>
-            <a href="{{ route('login') }}" class="text-gray-700 hover:text-orange-600">Inicia sesión</a>
-            <a href="{{ route('register') }}" class="text-gray-700 hover:text-orange-600">Regístrate</a>
-        </nav>
     </div>
 
-    <!-- Cuadro de búsqueda que aparece al tocar el ícono de lupa -->
-    <div id="searchBox" class="hidden px-4 mt-2 md:mt-0 md:px-0">
-        <form action="{{ route('search') }}" method="GET" class="max-w-md mx-auto">
-            <div class="relative">
-                <input type="text" name="query" placeholder="Buscar..." class="w-full border border-gray-300 rounded-full px-4 py-2 pl-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm transition" />
-                <span class="absolute left-3 top-2.5 text-gray-400">
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                </span>
-            </div>
+    <div id="searchBox" class="hidden border-t border-black/5 px-5 py-4 md:hidden">
+        <form action="{{ route('search') }}" method="GET" class="mx-auto max-w-7xl">
+            <label for="site-search" class="sr-only">Buscar en Estilo Vivo</label>
+            <input id="site-search" type="search" name="query" placeholder="Buscar..." class="w-full rounded-full border-black/15 bg-white px-5 py-3 text-sm focus:border-[#a96242] focus:ring-[#a96242]">
         </form>
     </div>
 
-    <!-- Menú alternativo para dispositivos móviles -->
-    <div id="mobileMenu" class="hidden md:hidden mt-4 px-6 space-y-3">
-        <a href="{{ url('/#inicio') }}" class="block text-gray-700 hover:text-orange-600">Inicio</a>
-        <a href="{{ url('/#quienes-somos') }}" class="block text-gray-700 hover:text-orange-600">Quiénes somos</a>
-        <a href="{{ url('/#servicios') }}" class="block text-gray-700 hover:text-orange-600">Servicios</a>
-        <a href="{{ route('galeria.index') }}" class="block text-gray-700 hover:text-orange-600">Galería</a>
-        <a href="{{ url('/#ubicacion') }}" class="block text-gray-700 hover:text-orange-600">Ubicación</a>
-        <a href="{{ route('login') }}" class="block text-orange-600 font-medium">Cita previa</a>
-        <a href="{{ route('login') }}" class="block text-gray-700 hover:text-orange-600">Inicia sesión</a>
-        <a href="{{ route('register') }}" class="block text-gray-700 hover:text-orange-600">Regístrate</a>
-    </div>
+    <nav id="mobileMenu" class="hidden border-t border-black/5 bg-[#f8f6f2] px-6 py-4 md:hidden" aria-label="Navegación móvil">
+        <div class="mx-auto flex max-w-7xl flex-col gap-1 text-sm">
+            <a href="{{ route('home') }}#inicio" class="rounded-lg px-3 py-3 hover:bg-black/5">Inicio</a>
+            <a href="{{ route('home') }}#quienes-somos" class="rounded-lg px-3 py-3 hover:bg-black/5">El equipo</a>
+            <a href="{{ route('home') }}#servicios" class="rounded-lg px-3 py-3 hover:bg-black/5">Servicios</a>
+            <a href="{{ route('galeria.index') }}" class="rounded-lg px-3 py-3 hover:bg-black/5">Galería</a>
+            <a href="{{ route('home') }}#ubicacion" class="rounded-lg px-3 py-3 hover:bg-black/5">Dónde estamos</a>
+            <a href="{{ route('login') }}" class="mt-2 rounded-full bg-[#a96242] px-5 py-3 text-center font-semibold text-white">Pide cita</a>
+            <a href="{{ route('login') }}" class="rounded-lg px-3 py-3 hover:bg-black/5">Iniciar sesión</a>
+            <a href="{{ route('register') }}" class="rounded-lg px-3 py-3 hover:bg-black/5">Crear cuenta</a>
+        </div>
+    </nav>
 </header>

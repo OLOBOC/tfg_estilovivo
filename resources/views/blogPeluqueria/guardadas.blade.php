@@ -6,7 +6,7 @@
   <title>publicaciones guardadas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <script src="https://cdn.tailwindcss.com"></script>
+  @vite('resources/css/app.css')
 </head>
 
 <body class="bg-orange-100 font-sans">
@@ -82,6 +82,7 @@
     }
   </script>
 
+  @include('partials.footer.footer')
 </body>
 
 </html>

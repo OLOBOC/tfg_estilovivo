@@ -16,8 +16,13 @@ use App\Http\Controllers\CorteController;
 */
 
 Route::get('/', function () {
-    return view('welcome', ['mensaje' => 'bienvenido cliente']);
+    return view('welcome');
 })->name('home');
+
+Route::view('/aviso-legal', 'legal.aviso')->name('legal.aviso');
+Route::view('/privacidad', 'legal.privacidad')->name('legal.privacidad');
+Route::view('/cookies', 'legal.cookies')->name('legal.cookies');
+Route::view('/condiciones', 'legal.condiciones')->name('legal.condiciones');
 
 Route::get('/search', [BusquedaController::class, 'buscar'])->name('search');
 
